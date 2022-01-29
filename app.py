@@ -1,8 +1,8 @@
 import secrets
-from flask import Flask, render_template, url_for, request, redirect, flash
+
+from flask import Flask, render_template, url_for, request, redirect, flash, session, abort
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///learningPlatform.db'
@@ -30,7 +30,7 @@ class Course(db.Model):
 @app.route('/')
 @app.route('/home')
 def index():
-    return render_template("index.html", menuItems=menuItems)
+    return render_template('index.html', menuItems=menuItems)
 
 
 @app.route('/create_course', methods=['POST', 'GET'])
@@ -44,38 +44,38 @@ def create_course():
         try:
             if len(title) == 0:
                 flash('ERROR: error while sending data!', category='danger')
-                return render_template("create_course.html",  title="Create course", menuItems=menuItems)
+                return render_template('create_course.html', title="Create course", menuItems=menuItems)
             else:
                 db.session.add(course)
                 db.session.commit()
                 flash('Data sent successfully!', category='success')
-                return render_template("create_course.html",  title="Create course", menuItems=menuItems)
+                return render_template('create_course.html', title="Create course", menuItems=menuItems)
 
         except:
             flash('ERROR: error while sending data!', category='danger')
             return
     else:
-        return render_template("create_course.html", title="Create course", menuItems=menuItems)
+        return render_template('create_course.html', title="Create course", menuItems=menuItems)
 
 
 @app.route('/about')
 def about():
-    return render_template("about.html", title="About learning platform", menuItems=menuItems)
+    return render_template('about.html', title="About learning platform", menuItems=menuItems)
 
 
 @app.route('/courses')
 def courses():
     all_courses = Course.query.order_by(Course.date.desc()).all()
-    return render_template("courses.html", title="Courses", all_courses=all_courses, menuItems=menuItems)
+    return render_template('courses.html', title="Courses", all_courses=all_courses, menuItems=menuItems)
 
 
 @app.route('/courses/<int:id>')
 def course_detail(id):
     course = Course.query.get(id)
     if not course:
-        return render_template("page404.html", title="Page not found", menuItems=menuItems), 404
+        return render_template('page404.html', title="Page not found", menuItems=menuItems), 404
     else:
-        return render_template("course_detail.html", title="Course detail", course=course, menuItems=menuItems)
+        return render_template('course_detail.html', title="Course detail", course=course, menuItems=menuItems)
 
 
 @app.route('/courses/<int:id>/delete')
@@ -106,11 +106,32 @@ def course_update(id):
         except:
             return "ERROR: error while updating data"
     else:
-        return render_template("course_update.html", title="Update course", course=course, menuItems=menuItems)
+        return render_template('course_update.html', title="Update course", course=course, menuItems=menuItems)
+
 
 @app.errorhandler(404)
 def pageNotFound(error):
-    return render_template("page404.html", title="Page not found", menuItems=menuItems), 404
+    return render_template('page404.html', title="Page not found", menuItems=menuItems), 404
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    # TODO: When tables with user login data appear - fix authorization
+    if 'userLogged' in session:
+        return redirect(url_for('profile', email=session['userLogged']))
+    elif request.method == 'POST' and request.form['email'] == "defaultUser@d.ru" and request.form['password'] == "123":
+        session['userLogged'] = request.form['email']
+        return redirect(url_for('profile', email=session['userLogged']))
+
+    return render_template('login.html', title="Authorization", menuItems=menuItems)
+
+
+@app.route('/profile/<email>')
+def profile(email):
+    if 'userLogged' not in session or session['userLogged'] != email:
+        abort(401)
+    return f"Welcome: {email}"
+
 
 if __name__ == '__main__':
     app.run(debug=True)

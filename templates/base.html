@@ -20,7 +20,7 @@
             <div class="container">
               <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                  <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+<!--                  <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>-->
                 </a>
 
                 {%- block menuStrip  -%}
@@ -36,7 +36,8 @@
                 </form>
 
                 <div class="text-end">
-                  <button type="button" class="btn btn-outline-light me-2">Login</button>
+                  <a href="{{ url_for('login')}}" class="btn btn-outline-light me-2">Login</a>
+<!--                  <button type="button" class="btn btn-outline-light me-2">Login</button>-->
                   <button type="button" class="btn btn-warning">Sign-up</button>
                 </div>
               </div>
@@ -54,11 +55,11 @@
       <span class="text-muted">&copy; 2021 Company, Inc</span>
     </div>
 
-    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+    <!--<ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
       <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"/></svg></a></li>
       <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
       <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"/></svg></a></li>
-    </ul>
+    </ul>-->
   </footer>
 </div>
 
