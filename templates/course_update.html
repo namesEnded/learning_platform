@@ -4,7 +4,8 @@
 UPDATE TITLE
 {% endblock %}
 
-{% block body %}
+{% block content %}
+{{ super() }}
     <div class="container mt-5">
         <h1>Update course</h1>
         <form method="post">
