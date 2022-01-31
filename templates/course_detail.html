@@ -3,15 +3,14 @@
 {% block title %}
 {{ course.title }}
 {% endblock %}
-
-{% block body %}
-
+{% block content %}
+{{ super() }}
 <div class="container mt-5">
         <h1>{{ course.title }}</h1>
 
         <div class="alert alert-info">
-            <p> {{ course.text}}</p>
-            <p><b> Date: {{ course.date.date() }}</b></p>
+            <p> {{ course.text_content}}</p>
+            <p><b> Date: {{ course.date_added }}</b></p>
             <a href="/courses/{{ course.id }}/delete" class="btn btn-danger">Delete</a>
             <a href="/courses/{{ course.id }}/update" class="btn btn-success">Edit</a>
         </div>
