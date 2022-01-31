@@ -22,11 +22,10 @@
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
 <!--                  <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>-->
                 </a>
-
                 {%- block menuStrip  -%}
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         {% for item in menuItems %}
-                            <li><a href="{{ item.url }}" class="nav-link px-2 text-white">{{ item.name }}</a></li>
+                            <li><a href="{{ item.item_url }}" class="nav-link px-2 text-white">{{ item.item_name }}</a></li>
                         {% endfor %}
                     </ul>
                 {% endblock -%}

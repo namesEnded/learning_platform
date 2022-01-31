@@ -3,7 +3,7 @@ import database
 from database import db
 from flask import Flask, render_template, url_for, request, redirect, flash, session, abort
 import commands
-from models import Course
+from models import Course, Menu
 from flask_migrate import Migrate
 
 
@@ -16,15 +16,27 @@ database.init_app(app)
 commands.start_app(app)
 migrate = Migrate(app, db)
 
-menuItems = [{"name": "Main", "url": "/"},
-             {"name": "About", "url": "/about"},
-             {"name": "Create course", "url": "/create_course"},
-             {"name": "Courses", "url": "/courses"}]
+# menuItems = [{"name": "Main", "url": "/"},
+#              {"name": "About", "url": "/about"},
+#              {"name": "Create course", "url": "/create_course"},
+#              {"name": "Courses", "url": "/courses"}]
+
+
+def menu_items():
+    try:
+        items = Menu.query.all()
+        if items:
+            return items
+    except:
+     print("!!! Error while getting menu items! !!!")
+    return []
+
 
 @app.route('/')
 @app.route('/home')
 def index():
-    return render_template('index.html', menuItems=menuItems)
+    print(menu_items())
+    return render_template('index.html', menuItems=menu_items())
 
 
 @app.route('/create_course', methods=['POST', 'GET'])
@@ -38,38 +50,38 @@ def create_course():
         try:
             if len(title) == 0:
                 flash('ERROR: error while sending data!', category='danger')
-                return render_template('create_course.html', title="Create course", menuItems=menuItems)
+                return render_template('create_course.html', title="Create course", menuItems=menu_items())
             else:
                 db.session.add(course)
                 db.session.commit()
                 flash('Data sent successfully!', category='success')
-                return render_template('create_course.html', title="Create course", menuItems=menuItems)
+                return render_template('create_course.html', title="Create course", menuItems=menu_items())
 
         except:
             flash('ERROR: error while sending data!', category='danger')
             return
     else:
-        return render_template('create_course.html', title="Create course", menuItems=menuItems)
+        return render_template('create_course.html', title="Create course", menuItems=menu_items())
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html', title="About learning platform", menuItems=menuItems)
+    return render_template('about.html', title="About learning platform", menuItems=menu_items())
 
 
 @app.route('/courses')
 def courses():
     all_courses = Course.query.order_by(Course.date_added.desc()).all()
-    return render_template('courses.html', title="Courses", all_courses=all_courses, menuItems=menuItems)
+    return render_template('courses.html', title="Courses", all_courses=all_courses, menuItems=menu_items())
 
 
 @app.route('/courses/<int:id>')
 def course_detail(id):
     course = Course.query.get(id)
     if not course:
-        return render_template('page404.html', title="Page not found", menuItems=menuItems), 404
+        return render_template('page404.html', title="Page not found", menuItems=menu_items()), 404
     else:
-        return render_template('course_detail.html', title="Course detail", course=course, menuItems=menuItems)
+        return render_template('course_detail.html', title="Course detail", course=course, menuItems=menu_items())
 
 
 @app.route('/courses/<int:id>/delete')
@@ -101,12 +113,12 @@ def course_update(id):
         except:
             return "ERROR: error while updating data"
     else:
-        return render_template('course_update.html', title="Update course", course=course, menuItems=menuItems)
+        return render_template('course_update.html', title="Update course", course=course, menuItems=menu_items())
 
 
 @app.errorhandler(404)
 def pageNotFound(error):
-    return render_template('page404.html', title="Page not found", menuItems=menuItems), 404
+    return render_template('page404.html', title="Page not found", menuItems=menu_items()), 404
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -118,7 +130,7 @@ def login():
         session['userLogged'] = request.form['email']
         return redirect(url_for('profile', email=session['userLogged']))
 
-    return render_template('login.html', title="Authorization", menuItems=menuItems)
+    return render_template('login.html', title="Authorization", menuItems=menu_items())
 
 
 @app.route('/profile/<email>')

@@ -32,3 +32,25 @@ class Course(db.Model):
             'date_added': self.date_added,
             'author' : self.author
         }
+
+
+class Menu(db.Model):
+    __tablename__ = 'menu_items'
+
+    id = db.Column(db.Integer, primary_key=True)
+    item_name = db.Column(db.String(100), nullable=False)
+    item_url = db.Column(db.String(300), nullable=False)
+
+    def __init__(self, item_name, item_url):
+        self.item_name = item_name
+        self.item_url = item_url
+
+    def __repr__(self):
+        return '< Saved Item:URL: id {}>'.format(self.item_url)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'item_name': self.item_name,
+            'item_url': self.item_url
+        }
