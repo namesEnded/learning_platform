@@ -10,12 +10,11 @@ BLOCK TITLE
         <h1>All courses</h1>
 
         {% if all_courses|length > 0 %}
-
             {% for el in all_courses %}
             <div class="alert alert-info">
                 <h2>{{ el.title }}</h2>
-                <p> {{ el.intro }}</p>
-                <p><b> Date: {{ el.date.date() }}</b></p>
+                <p> {{ el.review }}</p>
+                <p><b> Date: {{ el.date_added }}</b></p>
                 <a href="/courses/{{ el.id }}" class="btn btn-warning">More</a>
             </div>
             {% endfor %}

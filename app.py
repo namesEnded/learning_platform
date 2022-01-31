@@ -1,31 +1,25 @@
-import secrets
-
+import os
+import database
+from database import db
 from flask import Flask, render_template, url_for, request, redirect, flash, session, abort
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+import commands
+from models import Course
+from flask_migrate import Migrate
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///learningPlatform.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
-db = SQLAlchemy(app)
+
+# setup with thew configurations by user
+app.config.from_object(os.environ['APP_SETTINGS'])
+
+database.init_app(app)
+commands.start_app(app)
+migrate = Migrate(app, db)
 
 menuItems = [{"name": "Main", "url": "/"},
              {"name": "About", "url": "/about"},
              {"name": "Create course", "url": "/create_course"},
              {"name": "Courses", "url": "/courses"}]
-
-
-class Course(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(150), nullable=False)
-    intro = db.Column(db.String(300), nullable=False)
-    text = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return '<Course %r>' % self.id
-
 
 @app.route('/')
 @app.route('/home')
@@ -38,9 +32,9 @@ def create_course():
     # TODO: Make a normal request success handler
     if request.method == "POST":
         title = request.form['title']
-        intro = request.form['intro']
-        text = request.form['text']
-        course = Course(title=title, intro=intro, text=text)
+        review = request.form['intro']
+        text_content = request.form['text']
+        course = Course(title=title, review=review, text_content=text_content, author="default author")
         try:
             if len(title) == 0:
                 flash('ERROR: error while sending data!', category='danger')
@@ -65,7 +59,7 @@ def about():
 
 @app.route('/courses')
 def courses():
-    all_courses = Course.query.order_by(Course.date.desc()).all()
+    all_courses = Course.query.order_by(Course.date_added.desc()).all()
     return render_template('courses.html', title="Courses", all_courses=all_courses, menuItems=menuItems)
 
 
@@ -96,9 +90,10 @@ def course_update(id):
     course = Course.query.get(id)
 
     if request.method == "POST":
+
         course.title = request.form['title']
-        course.intro = request.form['intro']
-        course.text = request.form['text']
+        course.review = request.form['intro']
+        course.text_content = request.form['text']
 
         try:
             db.session.commit()
