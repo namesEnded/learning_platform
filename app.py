@@ -6,7 +6,7 @@ from flask import Flask, render_template, url_for, request, redirect, flash, ses
 import commands
 from models import Course, Menu
 from flask_migrate import Migrate
-from forms import LoginForm
+from forms import LoginForm, SignupForm
 from werkzeug.security import generate_password_hash, check_password_hash
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -148,6 +148,20 @@ def login():
     #     return redirect(url_for('profile', email=session['userLogged']))
 
     return render_template('login.html', title="Authorization", menuItems=menu_items(),name=name, form=form)
+
+
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+    # name = None
+    # form = LoginForm()
+    #
+    # if form.validate_on_submit():
+    #     name = form.email.data
+    #     form.email.data = ""
+    form = SignupForm()
+    return render_template('signup.html', title="Sign up", menuItems=menu_items(), form=form)
+
+
 
 
 @app.route('/profile/<email>')
