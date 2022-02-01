@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from database import db
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class Course(db.Model):
     __tablename__ = 'courses'
@@ -61,14 +61,25 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=True)
-    password = db.Column(db.String(300), nullable=False)
+    password_hash = db.Column(db.String(300), nullable=False)
     e_mail = db.Column(db.String(300), unique=True, nullable=False)
     courses = db.relationship('Course', backref='author', lazy='dynamic')
 
-    def __init__(self, name, role, password, e_mail):
+    @property
+    def password(self):
+        raise AttributeError('Password is not a readable attribute!')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def __init__(self, name, role, password_hash, e_mail):
         self.name = name
         self.role = role
-        self.password = password
+        self.password_hash = password_hash
         self.e_mail = e_mail
 
     def __repr__(self):
@@ -79,7 +90,7 @@ class User(db.Model):
             'id': self.id,
             'name': self.name,
             'role': self.role,
-            'password': self.password,
+            'password': self.password_hash,
             'e_mail': self.e_mail,
         }
 

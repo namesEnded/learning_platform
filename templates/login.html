@@ -8,6 +8,7 @@ ABOUT TITLE
 {{ super() }}
 
   <form action="/login" method="POST" class="form-signin">
+      {{ form.hidden_tag() }}
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -18,13 +19,16 @@ ABOUT TITLE
 
         <h1 class="h3 mb-3 fw-normal text-center">Login</h1>
 
-        <div class="form-floating">
-            <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com">
-            <label for="email">Email address</label>
+        <div class="form-floating mb-3">
+            {{form.email(class="form-control")}}
+<!--            <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com">-->
+            <label>Email address</label>
         </div>
-        <div class="form-floating">
-            <input type="password" name="password"  class="form-control" id="password" placeholder="Password">
-            <label for="password">Password</label>
+
+        <div class="form-floating mb-3">
+            {{form.password(class="form-control")}}
+<!--            <input type="password" name="password"  class="form-control" id="password" placeholder="Password">-->
+            <label>Password</label>
         </div>
 
         <div class="checkbox mb-3">
@@ -32,6 +36,7 @@ ABOUT TITLE
                 <input type="checkbox" value="remember-me"> Remember me
             </label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+        {{form.submit(class="btn btn-primary")}}
+<!--        <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>-->
   </form>
 {% endblock %}

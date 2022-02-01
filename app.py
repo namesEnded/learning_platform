@@ -6,6 +6,8 @@ from flask import Flask, render_template, url_for, request, redirect, flash, ses
 import commands
 from models import Course, Menu
 from flask_migrate import Migrate
+from forms import LoginForm
+from werkzeug.security import generate_password_hash, check_password_hash
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
@@ -128,14 +130,24 @@ def pageNotFound(error):
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    # TODO: When tables with user login data appear - fix authorization
-    if 'userLogged' in session:
-        return redirect(url_for('profile', email=session['userLogged']))
-    elif request.method == 'POST' and request.form['email'] == "defaultUser@d.ru" and request.form['password'] == "123":
-        session['userLogged'] = request.form['email']
-        return redirect(url_for('profile', email=session['userLogged']))
+    name = None
+    form = LoginForm()
 
-    return render_template('login.html', title="Authorization", menuItems=menu_items())
+    if form.validate_on_submit():
+        name = form.email.data
+        form.email.data = ""
+
+
+
+
+    # # TODO: When tables with user login data appear - fix authorization
+    # if 'userLogged' in session:
+    #     return redirect(url_for('profile', email=session['userLogged']))
+    # elif request.method == 'POST' and request.form['email'] == "defaultUser@d.ru" and request.form['password'] == "123":
+    #     session['userLogged'] = request.form['email']
+    #     return redirect(url_for('profile', email=session['userLogged']))
+
+    return render_template('login.html', title="Authorization", menuItems=menu_items(),name=name, form=form)
 
 
 @app.route('/profile/<email>')
