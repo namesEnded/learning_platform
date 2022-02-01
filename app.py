@@ -1,14 +1,19 @@
 import os
 import database
+from dotenv import load_dotenv
 from database import db
 from flask import Flask, render_template, url_for, request, redirect, flash, session, abort
 import commands
 from models import Course, Menu
 from flask_migrate import Migrate
 
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+
+from config import *
 
 app = Flask(__name__)
-
 # setup with thew configurations by user
 app.config.from_object(os.environ['APP_SETTINGS'])
 
