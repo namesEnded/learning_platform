@@ -19,6 +19,7 @@ def choice_query():
 
 class SignupForm(FlaskForm):
     name = StringField("Name: ", validators=[DataRequired()])
+    username = StringField("Nickname: ", validators=[DataRequired()])
     email = StringField("Email: ", validators=[Email()])
     password_hash = PasswordField("Password: ", validators=[DataRequired(), EqualTo('password_hash2', message="Password must match!"), Length(min=4, max=100)])
     password_hash2 = PasswordField("Confirm password: ", validators=[DataRequired(), Length(min=4, max=100)])

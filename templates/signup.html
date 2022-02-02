@@ -6,6 +6,14 @@ SIGN UP TITLE
 
 {% block content %}
 {{ super() }}
+
+{% for message in get_flashed_messages() %}
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	  {{ message }}
+	  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+{% endfor %}
+
 {% if is_successful %}
 
 <div class="video-background-holder">
@@ -42,6 +50,11 @@ SIGN UP TITLE
         <div class="form-floating mb-3">
             {{signup_form.name(class="form-control")}}
             <label>Name</label>
+        </div>
+
+         <div class="form-floating mb-3">
+            {{signup_form.username(class="form-control")}}
+            <label>Username</label>
         </div>
 
         <div class="form-floating mb-3">

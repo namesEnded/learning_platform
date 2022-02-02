@@ -2,6 +2,8 @@ from datetime import datetime
 from sqlalchemy.orm import backref
 from database import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+
 
 class Course(db.Model):
     __tablename__ = 'courses'
@@ -55,16 +57,19 @@ class Menu(db.Model):
         }
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
-
+    username = db.Column(db.String(25), nullable=False)
+    #Kind of differents way to make one to one relationship
+    #------------------------------------------------------
     #role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), unique=True)
-
+    # ------------------------------------------------------
     #role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     #role = db.relationship("Role", backref=backref("user", uselist=False))
+    # ------------------------------------------------------
 
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     role = db.relationship("Role", back_populates="user")
@@ -84,8 +89,9 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def __init__(self, name, role, password_hash, e_mail):
+    def __init__(self, name,username, role, password_hash, e_mail):
         self.name = name
+        self.username = username
         self.role = role
         self.password_hash = password_hash
         self.e_mail = e_mail
@@ -97,6 +103,7 @@ class User(db.Model):
         return {
             'id': self.id,
             'name': self.name,
+            'username': self.username,
             'role': self.role,
             'password': self.password_hash,
             'e_mail': self.e_mail,

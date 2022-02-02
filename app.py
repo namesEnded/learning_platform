@@ -1,4 +1,5 @@
 import os
+
 import database
 from dotenv import load_dotenv
 
@@ -10,6 +11,7 @@ from models import Course, Menu, User
 from flask_migrate import Migrate
 from forms import LoginForm, SignupForm
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
 if os.path.exists(dotenv_path):
@@ -25,12 +27,20 @@ database.init_app(app)
 commands.start_app(app)
 migrate = Migrate(app, db)
 
-
 # menuItems = [{"name": "Main", "url": "/"},
 #              {"name": "About", "url": "/about"},
 #              {"name": "Create course", "url": "/create_course"},
 #              {"name": "Courses", "url": "/courses"}]
 
+# Need to login-flask
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 def menu_items():
     try:
@@ -134,21 +144,34 @@ def pageNotFound(error):
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     name = None
-    form = LoginForm()
-    print(form.errors)
-    if form.validate_on_submit():
-        print(form.email.data)
-        name = form.email.data
-        form.email.data = ""
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user = User.query.filter_by(e_mail=login_form.email.data).first()
+        if user:
+            password = login_form.password.data
+            if check_password_hash(user.password_hash, password):
+                login_user(user)
+                flash("Login successful!")
+                return redirect(url_for('dashboard'))
+            else:
+                flash("Wrong password!")
+        else:
+            flash("User doesnt exist")
+    return render_template('login.html', title="Authorization", menuItems=menu_items(), name=name, form=login_form)
 
-    # # TODO: When tables with user login data appear - fix authorization
-    # if 'userLogged' in session:
-    #     return redirect(url_for('profile', email=session['userLogged']))
-    # elif request.method == 'POST' and request.form['email'] == "defaultUser@d.ru" and request.form['password'] == "123":
-    #     session['userLogged'] = request.form['email']
-    #     return redirect(url_for('profile', email=session['userLogged']))
 
-    return render_template('login.html', title="Authorization", menuItems=menu_items(), name=name, form=form)
+@app.route('/logout', methods=['POST', 'GET'])
+@login_required
+def logout():
+    logout_user()
+    flash("You have been log out!")
+    return redirect(url_for('index'))
+
+
+@app.route('/dashboard', methods=['POST', 'GET'])
+@login_required
+def dashboard():
+    return render_template('user_dashboard.html', title="Authorization", menuItems=menu_items())
 
 
 @app.route('/signup', methods=['POST', 'GET'])
@@ -179,23 +202,21 @@ def signup():
         if user is None:
             role = models.Role.query.get(signup_form.role_id.data.id)
             password_hash = generate_password_hash(signup_form.password_hash.data, "sha256")
-            signup_user = User(name=signup_form.name.data, role=role, password_hash=password_hash,
-                               e_mail=signup_form.email.data)
+            signup_user = User(name=signup_form.name.data, username=signup_form.username.data, role=role,
+                               password_hash=password_hash, e_mail=signup_form.email.data)
             user_name = signup_form.name.data
             is_successful = True
             db.session.add(signup_user)
             db.session.commit()
         signup_form.name.data = ''
+        signup_form.username.data = ''
         signup_form.email.data = ''
         signup_form.password_hash.data = ''
         tmp_role = models.Role.query.get(1)
-
         signup_form.role_id.data = tmp_role
-
-    #     user = User.query.filter_by(email=form.email.data).first()
-    #     if user is None:
-    #         user
-
+        flash("User Added Successfully!")
+    else:
+        flash("Error!")
     return render_template('signup.html', title="Signup", menuItems=menu_items(), signup_form=signup_form,
                            is_successful=is_successful, signup_user=signup_user)
 
