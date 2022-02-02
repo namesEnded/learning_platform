@@ -1,13 +1,34 @@
 {% extends 'base.html' %}
 
 {% block title %}
-ABOUT TITLE
+SIGN UP TITLE
 {% endblock %}
 
 {% block content %}
 {{ super() }}
+{% if is_successful %}
 
+<div class="video-background-holder">
+  <div class="video-background-overlay"></div>
+  <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+        <source src="https://media.giphy.com/media/aWRWTF27ilPzy/giphy.mp4" type="video/mp4">
+    </video>
+  <div class="video-background-content container h-100">
+    <div class="d-flex h-100 text-center align-items-center">
+      <div class="w-100 text-white">
+        <h1 class="display-4">Hello, {{ signup_user.name}} </h1>
+        <p class="lead mb-0">Your email: {{ signup_user.e_mail }}, and your password is {{ signup_user.password_hash }}, oh thats is joke (¬‿¬ ) </p>
+        <p class="lead">Back to  <a href="{{ url_for('index')}}" class="text-white">
+                    <u>main page</u></a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
   <form action="/signup" method="POST" class="form-signin">
+      {{ signup_form.hidden_tag() }}
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -16,31 +37,37 @@ ABOUT TITLE
             </div>
         </div>
 
-        <h1 class="h3 mb-3 fw-normal text-center">Sign up</h1>
+        <h1 class="h3 mb-3 fw-normal text-center">Login</h1>
 
         <div class="form-floating mb-3">
-            <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com">
+            {{signup_form.name(class="form-control")}}
+            <label>Name</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            {{signup_form.email(class="form-control")}}
             <label>Email address</label>
         </div>
 
         <div class="form-floating mb-3">
-            <input type="password" name="password"  class="form-control" id="password" placeholder="Password">
+            {{signup_form.password_hash(class="form-control")}}
             <label>Password</label>
         </div>
 
+        <div class="form-floating mb-3">
+            {{signup_form.password_hash2(class="form-control")}}
+            <label>Confirm password</label>
+        </div>
 
-        {{ form.role_id(class="form-select mb-3") }}
-            {% for error in form.role_id.errors  %}
+        <div class="form-floating mb-3">
+        {{ signup_form.role_id(class="form-select mb-3") }}
+            {% for error in signup_form.role_id.errors  %}
                  <h1 class="h3 mb-3 fw-normal text-center">{{ error }}</h1>
             {% endfor %}
-
-        <!--<select class="form-select mb-3" aria-label="Default select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>
--->
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+          <label>Chose your role</label>
+        </div>
+        {{signup_form.submit(class="btn btn-primary")}}
   </form>
+{% endif %}
 {% endblock %}
+

@@ -1,10 +1,12 @@
 import os
 import database
 from dotenv import load_dotenv
+
+import models
 from database import db
 from flask import Flask, render_template, url_for, request, redirect, flash, session, abort
 import commands
-from models import Course, Menu
+from models import Course, Menu, User
 from flask_migrate import Migrate
 from forms import LoginForm, SignupForm
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -23,6 +25,7 @@ database.init_app(app)
 commands.start_app(app)
 migrate = Migrate(app, db)
 
+
 # menuItems = [{"name": "Main", "url": "/"},
 #              {"name": "About", "url": "/about"},
 #              {"name": "Create course", "url": "/create_course"},
@@ -35,7 +38,7 @@ def menu_items():
         if items:
             return items
     except:
-     print("!!! Error while getting menu items! !!!")
+        print("!!! Error while getting menu items! !!!")
     return []
 
 
@@ -132,13 +135,11 @@ def pageNotFound(error):
 def login():
     name = None
     form = LoginForm()
-
+    print(form.errors)
     if form.validate_on_submit():
+        print(form.email.data)
         name = form.email.data
         form.email.data = ""
-
-
-
 
     # # TODO: When tables with user login data appear - fix authorization
     # if 'userLogged' in session:
@@ -147,21 +148,56 @@ def login():
     #     session['userLogged'] = request.form['email']
     #     return redirect(url_for('profile', email=session['userLogged']))
 
-    return render_template('login.html', title="Authorization", menuItems=menu_items(),name=name, form=form)
+    return render_template('login.html', title="Authorization", menuItems=menu_items(), name=name, form=form)
 
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    # name = None
-    # form = LoginForm()
-    #
-    # if form.validate_on_submit():
-    #     name = form.email.data
-    #     form.email.data = ""
-    form = SignupForm()
-    return render_template('signup.html', title="Sign up", menuItems=menu_items(), form=form)
+    signup_form = SignupForm()
+    is_submitted = False
+    is_validate = False
+    is_successful = False
+    user_name = ''
+    signup_user = None
 
+    if signup_form.is_submitted():
+        is_submitted = True
 
+    if signup_form.validate():
+        is_validate = True
+
+    if not signup_form.errors:
+        signup_form_errors = "all is fine"
+    else:
+        signup_form_errors = signup_form.errors
+
+    print("Sign up form: submitted = {}, validate = {}.".format(is_submitted, is_validate))
+    print("Sign up form errors: {}".format(signup_form_errors))
+
+    if signup_form.validate_on_submit():
+        user = User.query.filter_by(e_mail=signup_form.email.data).first()
+        if user is None:
+            role = models.Role.query.get(signup_form.role_id.data.id)
+            password_hash = generate_password_hash(signup_form.password_hash.data, "sha256")
+            signup_user = User(name=signup_form.name.data, role=role, password_hash=password_hash,
+                               e_mail=signup_form.email.data)
+            user_name = signup_form.name.data
+            is_successful = True
+            db.session.add(signup_user)
+            db.session.commit()
+        signup_form.name.data = ''
+        signup_form.email.data = ''
+        signup_form.password_hash.data = ''
+        tmp_role = models.Role.query.get(1)
+
+        signup_form.role_id.data = tmp_role
+
+    #     user = User.query.filter_by(email=form.email.data).first()
+    #     if user is None:
+    #         user
+
+    return render_template('signup.html', title="Signup", menuItems=menu_items(), signup_form=signup_form,
+                           is_successful=is_successful, signup_user=signup_user)
 
 
 @app.route('/profile/<email>')

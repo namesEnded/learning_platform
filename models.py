@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from sqlalchemy.orm import backref
 from database import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -10,7 +10,7 @@ class Course(db.Model):
     title = db.Column(db.String(150), nullable=False)
     review = db.Column(db.String(300), nullable=False)
     text_content = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, title, review, text_content, author):
@@ -58,9 +58,17 @@ class Menu(db.Model):
 class User(db.Model):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=True)
+
+    #role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), unique=True)
+
+    #role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    #role = db.relationship("Role", backref=backref("user", uselist=False))
+
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    role = db.relationship("Role", back_populates="user")
+
     password_hash = db.Column(db.String(300), nullable=False)
     e_mail = db.Column(db.String(300), unique=True, nullable=False)
     courses = db.relationship('Course', backref='author', lazy='dynamic')
@@ -100,13 +108,14 @@ class Role(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    users = db.relationship('User', backref='users', lazy='dynamic')
+    #user = db.relationship('User', backref='role', uselist=False)
+    user = db.relationship("User", back_populates="role")
 
     def __init__(self, name):
         self.name = name
 
     def __repr__(self):
-        return '< Saved role: name {}>'.format(self.name)
+        return '< Saved role id: {}>'.format(self.id)
 
     def serialize(self):
         return {
