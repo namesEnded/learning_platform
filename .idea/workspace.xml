@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8df7b630-7afd-4edf-835a-e144c9ceecac" name="Changes" comment="add: first iteration of authorization.&#10;logout, login, sign in" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" show_ignored="true" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="aphonin_feature" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="authorization_feature" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="77d47bd9-4874-49b0-a42f-3d54bba7a3c3" />
+        <option name="url" value="https://namesEnded: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@github.com/namesEnded/learning_platform.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file:///usr/lib/python3.9/os.py" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="24KTvgO0eSv4BspSV4uGmE32TIl" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/tmp/learning_platform/app.py" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="learningPlatform" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.app" />
+        <item itemvalue="Python.app" />
+        <item itemvalue="Python.app" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8df7b630-7afd-4edf-835a-e144c9ceecac" name="Changes" comment="" />
+      <created>1643378512692</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1643378512692</updated>
+    </task>
+    <task id="LOCAL-00001" summary="add: success/error notifications, menu rendering dictionary">
+      <created>1643471090228</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1643471090228</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add: 404 error handler">
+      <created>1643478864258</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1643478864259</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add: Login form, exemplary login functionality">
+      <created>1643484625971</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1643484625971</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add: individual commands, separate database models file, new DBMS, configurate file">
+      <created>1643594858555</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1643594858555</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add: individual commands, separate database models file, new DBMS, configurate file, DB migrations">
+      <created>1643594888694</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1643594888694</updated>
+    </task>
+    <task id="LOCAL-00006" summary="add: transfer of menu items associated with url to the database">
+      <created>1643656934006</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1643656934006</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add: transfer of menu items associated with url to the database">
+      <created>1643656956044</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1643656956044</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add: auto add env func; fix: SECRET_KEY had no effect">
+      <created>1643718581828</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1643718581828</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add: update DB model">
+      <created>1643726600542</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1643726600542</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add: switch to Flask WTForms, pbkdf2 password encryption">
+      <created>1643739378415</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1643739378415</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add: select role field, sign up page">
+      <created>1643743409931</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1643743409931</updated>
+    </task>
+    <task id="LOCAL-00012" summary="add: forms.py and requirements.txt">
+      <created>1643743466962</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1643743466962</updated>
+    </task>
+    <task id="LOCAL-00013" summary="add: sign up function">
+      <created>1643824933695</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1643824933695</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add: first iteration of authorization.&#10;logout, login, sign in">
+      <created>1643830321203</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1643830321203</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add: success/error notifications, menu rendering dictionary" />
+    <MESSAGE value="add: 404 error handler" />
+    <MESSAGE value="add: Login form, exemplary login functionality" />
+    <MESSAGE value="add: individual commands, separate database models file, new DBMS, configurate file" />
+    <MESSAGE value="add: individual commands, separate database models file, new DBMS, configurate file, DB migrations" />
+    <MESSAGE value="add: transfer of menu items associated with url to the database" />
+    <MESSAGE value="add: auto add env func; fix: SECRET_KEY had no effect" />
+    <MESSAGE value="add: update DB model" />
+    <MESSAGE value="add: switch to Flask WTForms, pbkdf2 password encryption" />
+    <MESSAGE value="add: select role field, sign up page" />
+    <MESSAGE value="add: forms.py and requirements.txt" />
+    <MESSAGE value="add: sign up function" />
+    <MESSAGE value="add: first iteration of authorization.&#10;logout, login, sign in" />
+    <option name="LAST_COMMIT_MESSAGE" value="add: first iteration of authorization.&#10;logout, login, sign in" />
+  </component>
+</project>
