@@ -7,6 +7,28 @@ ABOUT TITLE
 {% block content %}
 {{ super() }}
 
+{% if is_submitted%}
+    <div class="container">
+
+        {% for message in get_flashed_messages() %}
+                <div class="mb-2 alert alert-warning alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        {% endfor %}
+
+        {% for error in form.errors %}
+            {% for message in form.errors[error] %}
+                <div class="mb-3 alert alert-warning alert-dismissible fade show " role="alert">
+                     {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+    </div>
+{% endif %}
+
   <form action="/login" method="POST" class="form-signin">
       {{ form.hidden_tag() }}
         <div class="container">

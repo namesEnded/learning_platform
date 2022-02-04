@@ -3,11 +3,10 @@ import os
 import database
 from dotenv import load_dotenv
 
-import models
 from database import db
 from flask import Flask, render_template, url_for, request, redirect, flash, session, abort
 import commands
-from models import Course, Menu, User
+from models import Course, Menu, User, Role
 from flask_migrate import Migrate
 from forms import LoginForm, SignupForm
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -41,6 +40,7 @@ login_manager.login_view = 'login'
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 def menu_items():
     try:
@@ -145,6 +145,11 @@ def pageNotFound(error):
 def login():
     name = None
     login_form = LoginForm()
+
+    is_submitted = False
+    if login_form.is_submitted():
+        is_submitted = True
+
     if login_form.validate_on_submit():
         user = User.query.filter_by(e_mail=login_form.email.data).first()
         if user:
@@ -157,7 +162,8 @@ def login():
                 flash("Wrong password!")
         else:
             flash("User doesnt exist")
-    return render_template('login.html', title="Authorization", menuItems=menu_items(), name=name, form=login_form)
+    return render_template('login.html', title="Authorization", menuItems=menu_items(), name=name, form=login_form,
+                           is_submitted=is_submitted)
 
 
 @app.route('/logout', methods=['POST', 'GET'])
@@ -176,7 +182,8 @@ def dashboard():
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    signup_form = SignupForm()
+    default_role = Role.query.get(1)
+    signup_form = SignupForm(role_id=default_role)
     is_submitted = False
     is_validate = False
     is_successful = False
@@ -196,29 +203,27 @@ def signup():
 
     print("Sign up form: submitted = {}, validate = {}.".format(is_submitted, is_validate))
     print("Sign up form errors: {}".format(signup_form_errors))
+    print("signup_form.validate_on_submit(): {}".format(signup_form.validate_on_submit()))
 
     if signup_form.validate_on_submit():
         user = User.query.filter_by(e_mail=signup_form.email.data).first()
         if user is None:
-            role = models.Role.query.get(signup_form.role_id.data.id)
+            role = Role.query.get(signup_form.role_id.data.id)
             password_hash = generate_password_hash(signup_form.password_hash.data, "sha256")
             signup_user = User(name=signup_form.name.data, username=signup_form.username.data, role=role,
                                password_hash=password_hash, e_mail=signup_form.email.data)
-            user_name = signup_form.name.data
             is_successful = True
             db.session.add(signup_user)
             db.session.commit()
-        signup_form.name.data = ''
-        signup_form.username.data = ''
-        signup_form.email.data = ''
-        signup_form.password_hash.data = ''
-        tmp_role = models.Role.query.get(1)
-        signup_form.role_id.data = tmp_role
-        flash("User Added Successfully!")
-    else:
-        flash("Error!")
+            signup_form.name.data = ''
+            signup_form.username.data = ''
+            signup_form.email.data = ''
+            signup_form.password_hash.data = ''
+            flash("User Added Successfully!")
+        else:
+            flash("Error! Email already in use")
     return render_template('signup.html', title="Signup", menuItems=menu_items(), signup_form=signup_form,
-                           is_successful=is_successful, signup_user=signup_user)
+                           is_successful=is_successful, signup_user=signup_user, is_submitted=is_submitted)
 
 
 @app.route('/profile/<email>')

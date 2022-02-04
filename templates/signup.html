@@ -7,13 +7,27 @@ SIGN UP TITLE
 {% block content %}
 {{ super() }}
 
-{% for message in get_flashed_messages() %}
-	<div class="alert alert-warning alert-dismissible fade show" role="alert">
-	  {{ message }}
-	  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-	</div>
-{% endfor %}
+{% if is_submitted%}
+    <div class="container">
+        {% for message in get_flashed_messages() %}
+            <div class="mb-2 alert alert-warning alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
 
+        {% for error in signup_form.errors %}
+            {% for message in signup_form.errors[error] %}
+            <div class="container">
+                <div class="mb-3 alert alert-warning alert-dismissible fade show " role="alert">
+                     {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
 {% if is_successful %}
 
 <div class="video-background-holder">
@@ -75,9 +89,12 @@ SIGN UP TITLE
         <div class="form-floating mb-3">
         {{ signup_form.role_id(class="form-select mb-3") }}
             {% for error in signup_form.role_id.errors  %}
-                 <h1 class="h3 mb-3 fw-normal text-center">{{ error }}</h1>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  {{ error }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             {% endfor %}
-          <label>Chose your role</label>
+            <label>Chose your role</label>
         </div>
         {{signup_form.submit(class="btn btn-primary")}}
   </form>
