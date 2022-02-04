@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+UPDATE TITLE
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Update course</h1>
+        <form method="post">
+            <input type="text" name="title" id="title" value = "{{ course.title }}" class="form-control" placeholder="Input name "><br>
+            <textarea name="intro" id="intro" class="form-control"  placeholder="Input intro">{{ course.intro }}</textarea><br>
+            <textarea name="text" id="text" class="form-control"  placeholder="Input text">{{ course.text }}</textarea><br>
+            <input type="submit" class="btn btn-success" value="Update"><br>
+        </form>
+    </div>
+{% endblock %}
