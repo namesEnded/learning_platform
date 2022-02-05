@@ -36,9 +36,13 @@
                 </form>
 
                 <div class="text-end">
-                  <a href="{{ url_for('login')}}" class="btn btn-outline-light me-2">Login</a>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('logout')}}" class="btn btn-outline-light me-2">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('login')}}" class="btn btn-outline-light me-2">Login</a>
+                        <a href="{{ url_for('signup')}}" class="btn btn-warning">Sign-up</a>
+                    {% endif %}
 <!--                  <button type="button" class="btn btn-outline-light me-2">Login</button>-->
-                  <a href="{{ url_for('signup')}}" class="btn btn-warning">Sign-up</a>
                 </div>
               </div>
             </div>
