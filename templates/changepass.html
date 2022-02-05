@@ -5,17 +5,32 @@ BLOCK TITLE
 {% endblock %}
 
 {% block body %}
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/profile">Профиль</a></li>
-            <li class="breadcrumb-item active">Настройки</li>
-            <li class="breadcrumb-item active">Изменение пароля</li>
-            </ol>
+            <ul class="breadcrumb-1">
+                <li>
+                    <a href="/profile"></a>
+                </li>
+                <li>
+                    <span>Настройки</span>
+                </li>
+                <li>
+                    <span>Изменить пароль</span>
+                </li>
+            </ul>
             <div class=e52_230>
             <div class="e52_231"></div>
-            <div class="e52_232"></div><span  class="e52_233">Профиль / </span><span  class="e52_234">Настройки /</span><span  class="e52_235">Изменить пароль</span><span  class="e52_236">Изменить пароль</span>
-            <div class="e52_244"></div><span  class="e52_245">Редактировать информацию</span>
-            <div class="e52_246"></div><span  class="e52_247">Изменить пароль</span>
-            <div class="e52_248"></div><span  class="e52_249">Предпочитаемый язык</span>
+            <div class="e52_232"></div><span  class="e52_236">Изменить пароль</span>
+
+            <div class="row">
+              <div class="col-4">
+                <div class="e54_291 list-group" id="list-tab" role="tablist">
+                  <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="/profile" role="tab" aria-controls="list-profile">Профиль</a>
+                  <a class="list-group-item list-group-item-action" id="list-edit-list" data-bs-toggle="list" href="/editpage" role="tab" aria-controls="list-edit">Редактирование профиля</a>
+                  <a class="list-group-item list-group-item-action active" id="list-password-list" data-bs-toggle="list" href="/changepass" role="tab" aria-controls="list-password">Изменить пароль</a>
+                  <a class="list-group-item list-group-item-action" id="list-language-list" data-bs-toggle="list" href="/language" role="tab" aria-controls="list-language">Предпочитаемый язык</a>
+                </div>
+              </div>
+            </div>
+
             <div class=e52_260>
               <button type="button" class="btn btn-success">Сохранить изменения</button>
             </div><span  class="e52_284">Текущий пароль</span><span  class="e52_285">Новый пароль</span><span  class="e52_286">Новый пароль (ещё раз)</span>
