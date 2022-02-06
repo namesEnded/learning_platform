@@ -3,9 +3,9 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 uri = os.getenv("DATABASE_URL")  # or other relevant config var
-print('< os.getenv:URL = {}>'.format(uri))
+print('os.getenv:URL = {}'.format(uri))
 uri = os.environ['DATABASE_URL']
-print('< os.environ:URL = {}>'.format(uri))
+print('os.environ:URL = {}'.format(uri))
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
 print('URL = {}>'.format(uri))
