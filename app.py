@@ -23,6 +23,8 @@ app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 database.init_app(app)
+with app.app_context():
+    db.create_all()
 commands.start_app(app)
 migrate = Migrate(app, db)
 
@@ -35,7 +37,6 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-
 
 @login_manager.user_loader
 def load_user(user_id):
