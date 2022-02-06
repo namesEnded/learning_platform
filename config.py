@@ -2,6 +2,13 @@ import secrets
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+print('< os.getenv:URL = {}>'.format(uri))
+uri = os.environ['DATABASE_URL']
+print('< os.environ:URL = {}>'.format(uri))
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+print('URL = {}>'.format(uri))
 
 
 class Config(object):
@@ -10,13 +17,13 @@ class Config(object):
     CSRF_ENABLED = True
 
     SECRET_KEY = "rly dont care about this now"
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SQLALCHEMY_DATABASE_URI = uri
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class ProductionConfig(Config):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SQLALCHEMY_DATABASE_URI = uri
 
 
 class StagingConfig(Config):

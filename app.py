@@ -19,17 +19,11 @@ if os.path.exists(dotenv_path):
 from config import *
 
 
-uri = os.getenv("DATABASE_URL")  # or other relevant config var
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
-
 app = Flask(__name__)
 # setup with thew configurations by user
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 database.init_app(app)
-with app.app_context():
-    db.create_all()
 commands.start_app(app)
 migrate = Migrate(app, db)
 
