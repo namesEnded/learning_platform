@@ -6,20 +6,30 @@ BLOCK TITLE
 
 {% block content %}
 {{ super() }}
-<div class="container mt-5">
-        <h1>All courses</h1>
+{% if current_user.is_authenticated %}
+    <div class="container mt-5">
+            <h1>All courses</h1>
 
-        {% if all_courses|length > 0 %}
-            {% for el in all_courses %}
-            <div class="alert alert-info">
-                <h2>{{ el.title }}</h2>
-                <p> {{ el.review }}</p>
-                <p><b> Date: {{ el.date_added }}</b></p>
-                <a href="/courses/{{ el.id }}" class="btn btn-warning">More</a>
-            </div>
-            {% endfor %}
-        {% else %}
-        <p> There is no courses!</p>
-    {% endif %}
-</div>
+            {% if all_courses|length > 0 %}
+                {% for el in all_courses %}
+                <div class="alert alert-info">
+                    <h2>{{ el.title }}</h2>
+                    <p> {{ el.review }}</p>
+                    <p><b> Date: {{ el.date_added }}</b></p>
+                    <a href="/courses/{{ el.id }}" class="btn btn-warning">More</a>
+                </div>
+                {% endfor %}
+            {% else %}
+            <p> There is no courses!</p>
+        {% endif %}
+    </div>
+{% else %}
+ <div class="container mt-5">
+            <h1 class="display-4">You must be logged in to access!</h1>
+            <p class="lead mb-0" >Go to  <a href="{{ url_for('login')}}" class="text-black">
+                    <u>login page</u></a>
+        </p>
+ </div>
+
+{% endif %}
 {% endblock %}

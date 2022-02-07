@@ -63,10 +63,11 @@ def index():
 def create_course():
     # TODO: Make a normal request success handler
     if request.method == "POST":
+        user = current_user
         title = request.form['title']
         review = request.form['intro']
         text_content = request.form['text']
-        course = Course(title=title, review=review, text_content=text_content, author="default author")
+        course = Course(title=title, review=review, text_content=text_content, user=user)
         try:
             if len(title) == 0:
                 flash('ERROR: error while sending data!', category='danger')

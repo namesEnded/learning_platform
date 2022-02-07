@@ -14,12 +14,13 @@ class Course(db.Model):
     text_content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    user = db.relationship("User", back_populates="course")
 
-    def __init__(self, title, review, text_content, author):
+    def __init__(self, title, review, text_content, user):
+        self.user = user
         self.title = title
         self.review = review
         self.text_content = text_content
-        self.author = author
 
     def __repr__(self):
         return '< Course saved: id {}>'.format(self.id)
@@ -76,7 +77,7 @@ class User(db.Model, UserMixin):
 
     password_hash = db.Column(db.String(300), nullable=False)
     e_mail = db.Column(db.String(300), unique=True, nullable=False)
-    courses = db.relationship('Course', backref='author', lazy='dynamic')
+    course = db.relationship('Course', back_populates="user")
 
     @property
     def password(self):
