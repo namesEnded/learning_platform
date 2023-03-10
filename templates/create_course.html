@@ -9,24 +9,29 @@ ADD TITLE
     <div class="container mt-5">
         <h1>Add course</h1>
 
-        <div class="container">
-            {% for category, message in get_flashed_messages(True) %}
-            <div class="alert alert-{{category}}">
-                {% if category == 'success' %}
-                    <strong>Success!</strong>
-                {% else %}
-                    <strong>Error!</strong>
-                {% endif %}
-                {{message}}
-            </div>
-            {% endfor %}
-        </div>
+<!--        <div class="container">-->
+<!--            {% for category, message in get_flashed_messages(True) %}-->
+<!--            <div class="alert alert-{{category}}">-->
+<!--                {% if category == 'success' %}-->
+<!--                    <strong>Success!</strong>-->
+<!--                {% else %}-->
+<!--                    <strong>Error!</strong>-->
+<!--                {% endif %}-->
+<!--                {{message}}-->
+<!--            </div>-->
+<!--            {% endfor %}-->
+<!--        </div>-->
 
-        <form method="post">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+                {{ messages[0] }};
+        {% endif %}
+        {% endwith %}
+
+        <form method="post" action="/courses">
             <input type="text" name="title" id="title" class="form-control" placeholder="Input name "><br>
             <textarea name="intro" id="intro" class="form-control" placeholder="Input intro"></textarea><br>
             <textarea name="text" id="text" class="form-control" placeholder="Input text"></textarea><br>
             <input type="submit" class="btn btn-success" value="Send"><br>
         </form>
-    </div>
 {% endblock %}

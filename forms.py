@@ -7,10 +7,10 @@ from wtforms_sqlalchemy.fields import QuerySelectField;
 
 
 class LoginForm(FlaskForm):
-    email = StringField("Email: ", validators=[Email()])
-    password = PasswordField("Password: ", validators=[DataRequired(), Length(min=4, max=100)])
+    email = StringField("Логин", validators=[Email()])
+    password = PasswordField("Пароль", validators=[DataRequired(), Length(min=4, max=100)])
     remember = BooleanField("Remember me", default=False)
-    submit = SubmitField("Login")
+    submit = SubmitField("Войти")
 
 
 def choice_query():

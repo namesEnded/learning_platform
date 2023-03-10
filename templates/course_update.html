@@ -7,7 +7,7 @@ UPDATE TITLE
 {{ super() }}
     <div class="container mt-5">
         <h1>Update course</h1>
-        <form method="post">
+        <form  action="/courses/{{ course.id }}/edit" method="post" >
             <input type="text" name="title" id="title" value = "{{ course.title }}" class="form-control" placeholder="Input name "><br>
             <textarea name="intro" id="intro" class="form-control"  placeholder="Input intro">{{ course.review }}</textarea><br>
             <textarea name="text" id="text" class="form-control"  placeholder="Input text">{{ course.text_content }}</textarea><br>

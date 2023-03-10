@@ -5,14 +5,11 @@
 {% endblock %}
 {% block content %}
 {{ super() }}
-<div class="container mt-5">
         <h1>{{ course.title }}</h1>
-
-        <div class="alert alert-info">
-            <p> {{ course.text_content}}</p>
-            <p><b> Date: {{ course.date_added }}</b></p>
-            <a href="/courses/{{ course.id }}/delete" class="btn btn-danger">Delete</a>
-            <a href="/courses/{{ course.id }}/update" class="btn btn-success">Edit</a>
-        </div>
-</div>
+        <p> {{ course.text_content}}</p>
+        <p><b> Date: {{ course.date_added }}</b></p>
+        <form method="post" action="/courses/{{ course.id }}/delete">
+            <input type="submit" id="btn_about_course" value="Delete"><br>
+        </form>
+        <a href="/courses/{{ course.id }}/edit" class="btn btn-success">Edit</a>
 {% endblock %}

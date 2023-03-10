@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-ABOUT TITLE
+Login
 {% endblock %}
 
 {% block content %}
@@ -9,8 +9,7 @@ ABOUT TITLE
 
 {% if is_submitted%}
     <div class="container">
-
-        {% for message in get_flashed_messages() %}
+       <!--  {% for message in get_flashed_messages() %}
                 <div class="mb-2 alert alert-warning alert-dismissible fade show" role="alert">
                   {{ message }}
                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -24,38 +23,26 @@ ABOUT TITLE
                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             {% endfor %}
-        {% endfor %}
+        {% endfor %} -->
+
 
     </div>
 {% endif %}
 
-  <form action="/login" method="POST" class="form-signin">
-      {{ form.hidden_tag() }}
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <img class="mb-2 img-responsive center-block d-block mx-auto" src="http://www.arhiv-vologda.ru/upload/1573475258.jpg" alt="" width="70" height="70">
-                </div>
-            </div>
-        </div>
+<div id="main-content">
+    <div class="login_form">
+    <div class="main_login_title">mems.petrsu.ru 🎓</div>
+    <div class="sub_login_title">Модульная система управления обучением</div>
+    <form  action="/login" method="POST" class="form-signin">
+        {{ form.hidden_tag() }}
+        <label for="email" class="form_title">Логин</label><br>
+        {{form.email(class="input_field", placeholder="Логин")}}<br>
+        <label for="password" class="form_title">Пароль</label><br>
+        {{form.password(class="input_field", placeholder="Пароль")}}<br>
+        {{form.submit(class="login_submit_btn")}}
+    </form>
 
-        <h1 class="h3 mb-3 fw-normal text-center">Login</h1>
 
-        <div class="form-floating mb-3">
-            {{form.email(class="form-control")}}
-            <label>Email address</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            {{form.password(class="form-control")}}
-            <label>Password</label>
-        </div>
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        {{form.submit(class="btn btn-primary")}}
-  </form>
+    </div>
+</div>
 {% endblock %}

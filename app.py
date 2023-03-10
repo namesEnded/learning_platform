@@ -2,7 +2,7 @@ import os
 
 import database
 from dotenv import load_dotenv
-
+from sqlalchemy import exc
 from database import db
 from flask import Flask, render_template, url_for, request, redirect, flash, session, abort
 import commands
@@ -17,7 +17,6 @@ if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
 from config import *
-
 
 app = Flask(__name__)
 # setup with thew configurations by user
@@ -59,30 +58,30 @@ def index():
     return render_template('index.html', menuItems=menu_items())
 
 
-@app.route('/create_course', methods=['POST', 'GET'])
-def create_course():
-    # TODO: Make a normal request success handler
-    if request.method == "POST":
-        user = current_user
-        title = request.form['title']
-        review = request.form['intro']
-        text_content = request.form['text']
-        course = Course(title=title, review=review, text_content=text_content, user=user)
-        try:
-            if len(title) == 0:
-                flash('ERROR: error while sending data!', category='danger')
-                return render_template('create_course.html', title="Create course", menuItems=menu_items())
-            else:
-                db.session.add(course)
-                db.session.commit()
-                flash('Data sent successfully!', category='success')
-                return render_template('create_course.html', title="Create course", menuItems=menu_items())
-
-        except:
-            flash('ERROR: error while sending data!', category='danger')
-            return
-    else:
-        return render_template('create_course.html', title="Create course", menuItems=menu_items())
+# @app.route('/create_course', methods=['POST', 'GET'])
+# def create_course():
+#     # TODO: Make a normal request success handler
+#     if request.method == "POST":
+#         user = current_user
+#         title = request.form['title']
+#         review = request.form['intro']
+#         text_content = request.form['text']
+#         course = Course(title=title, review=review, text_content=text_content, user=user)
+#         try:
+#             if len(title) == 0:
+#                 flash('ERROR: error while sending data!', category='danger')
+#                 return render_template('create_course.html', title="Create course", menuItems=menu_items())
+#             else:
+#                 db.session.add(course)
+#                 db.session.commit()
+#                 flash('Data sent successfully!', category='success')
+#                 return render_template('create_course.html', title="Create course", menuItems=menu_items())
+#
+#         except:
+#             flash('ERROR: error while sending data!', category='danger')
+#             return
+#     else:
+#         return render_template('create_course.html', title="Create course", menuItems=menu_items())
 
 
 @app.route('/about')
@@ -90,51 +89,137 @@ def about():
     return render_template('about.html', title="About learning platform", menuItems=menu_items())
 
 
-@app.route('/courses')
+@app.route('/courses', methods=['POST', 'GET'])
+@login_required
 def courses():
-    all_courses = Course.query.order_by(Course.date_added.desc()).all()
-    return render_template('courses.html', title="Courses", all_courses=all_courses, menuItems=menu_items())
+
+    if request.method == "GET":
+        try:
+            all_courses = Course.query.order_by(Course.date_added.desc()).all()
+        except exc.SQLAlchemyError as ex:
+            flash('ERROR: error while getting date', category='danger')
+            return render_template('error.html', ex=ex.code)
+        return render_template('courses.html', title="Courses", all_courses=all_courses, menuItems=menu_items())
+
+    elif request.method == "POST":
+        user = current_user
+        title = request.form['title']
+        if Course.isExist(title):
+            flash('Course with this title already exist', category='success')
+            return render_template('create_course.html', title="Create course", menuItems=menu_items())
+        else:
+            review = request.form['intro']
+            text_content = request.form['text']
+            course = Course(title=title, review=review, text_content=text_content, user=user)
+            try:
+
+                if len(title) == 0:
+                    flash('ERROR: error while sending data!', category='danger')
+                    return render_template('create_course.html', title="Create course", menuItems=menu_items())
+                else:
+                    db.session.add(course)
+                    db.session.commit()
+                    flash('Data sent successfully!', category='success')
+                    return redirect('/courses')
+
+            except exc.SQLAlchemyError as ex:
+                flash('ERROR: error while sending data!', category='danger')
+                return render_template('error.html', ex=ex.code)
+    else:
+        return render_template('page405.html', title="Method Not Allowed", menuItems=menu_items()), 405
 
 
-@app.route('/courses/<int:id>')
-def course_detail(id):
-    course = Course.query.get(id)
+
+@app.route('/courses/new', methods=['GET'])
+@login_required
+def course_new():
+    return render_template('create_course.html', title="Create course", menuItems=menu_items())
+
+@app.route('/courses/<int:course_id>/delete', methods=['POST'])
+@login_required
+def course_delete(course_id):
+    course = Course.query.get_or_404(course_id)
+    try:
+        db.session.delete(course)
+        db.session.commit()
+        flash('Course delete successfully!', category='success')
+        return redirect('/courses')
+    except exc.SQLAlchemyError as ex:
+        return "ERROR: error while deleting course"
+
+@app.route('/courses/<int:course_id>/edit', methods=['POST','GET'])
+@login_required
+def course_update(course_id):
+    if request.method == "GET":
+        course = Course.query.get(course_id)
+        if not course:
+            return render_template('page404.html', title="Page not found", menuItems=menu_items()), 404
+        return render_template('course_update.html', title="Update course", course=course, menuItems=menu_items())
+    elif request.method == "POST":
+        course = Course.query.get(course_id)
+        course.title = request.form['title']
+        course.review = request.form['intro']
+        course.text_content = request.form['text']
+        try:
+            db.session.commit()
+            return redirect('/courses')
+        except exc.SQLAlchemyError as ex:
+            flash('ERROR: error while sending data!', category='danger')
+    else:
+        return render_template('page405.html', title="Method Not Allowed", menuItems=menu_items()), 405
+
+@app.get('/courses/<int:course_id>')
+@login_required
+def course_detail(course_id):
+    course = Course.query.get(course_id)
     if not course:
         return render_template('page404.html', title="Page not found", menuItems=menu_items()), 404
     else:
         return render_template('course_detail.html', title="Course detail", course=course, menuItems=menu_items())
 
 
-@app.route('/courses/<int:id>/delete')
-def course_delete(id):
-    course = Course.query.get_or_404(id)
-
-    try:
-        db.session.delete(course)
-        db.session.commit()
-        return redirect('/courses')
-
-    except:
-        return "ERROR: error while deleting course"
 
 
-@app.route('/courses/<int:id>/update', methods=['POST', 'GET'])
-def course_update(id):
-    course = Course.query.get(id)
-
-    if request.method == "POST":
-
-        course.title = request.form['title']
-        course.review = request.form['intro']
-        course.text_content = request.form['text']
-
-        try:
-            db.session.commit()
-            return redirect('/courses')
-        except:
-            return "ERROR: error while updating data"
-    else:
-        return render_template('course_update.html', title="Update course", course=course, menuItems=menu_items())
+# _____________________________________________________________
+#                 TRYING TO WRITE NORMAL API
+# _____________________________________________________________
+# @app.delete('/courses/<int:course_id>')
+# def course_delete(course_id):
+#     course = Course.query.get_or_404(course_id)
+#     try:
+#         db.session.delete(course)
+#         db.session.commit()
+#         flash('Course delete successfully!', category='success')
+#         return redirect('/courses')
+#     except exc.SQLAlchemyError as ex:
+#         return "ERROR: error while deleting course"
+#
+# @app.patch('/courses/<int:course_id>')
+# def course_update(course_id):
+#     course = Course.query.get(course_id)
+#     course.title = request.form['title']
+#     course.review = request.form['intro']
+#     course.text_content = request.form['text']
+#     try:
+#         db.session.commit()
+#         return redirect('/courses')
+#     except exc.SQLAlchemyError as ex:
+#         flash('ERROR: error while sending data!', category='danger')
+#
+# @app.get('/courses/<int:course_id>/edit')
+# def edit(course_id):
+#     course = Course.query.get(course_id)
+#     return render_template('course_update.html', title="Update course", course=course, menuItems=menu_items())
+#
+#
+# @app.get('/courses/<int:course_id>')
+# def course_detail(course_id):
+#     course = Course.query.get(course_id)
+#     if not course:
+#         return render_template('page404.html', title="Page not found", menuItems=menu_items()), 404
+#     else:
+#         return render_template('course_detail.html', title="Course detail", course=course, menuItems=menu_items())
+# _____________________________________________________________
 
 
 @app.errorhandler(404)
@@ -167,7 +252,7 @@ def login():
                            is_submitted=is_submitted)
 
 
-@app.route('/logout', methods=['POST', 'GET'])
+@app.route('/logout', methods=['GET'])
 @login_required
 def logout():
     logout_user()
@@ -178,7 +263,10 @@ def logout():
 @app.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
-    return render_template('user_dashboard.html', title="Authorization", menuItems=menu_items())
+    user_courses = None
+    if current_user.is_authenticated:
+        user_courses = current_user.courses
+    return render_template('user_dashboard.html', title="Authorization", menuItems=menu_items(), user_courses=user_courses)
 
 
 @app.route('/signup', methods=['POST', 'GET'])
@@ -227,7 +315,12 @@ def signup():
                            is_successful=is_successful, signup_user=signup_user, is_submitted=is_submitted)
 
 
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
 @app.route('/profile/<email>')
+@login_required
 def profile(email):
     if 'userLogged' not in session or session['userLogged'] != email:
         abort(401)

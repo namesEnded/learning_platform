@@ -1,35 +1,95 @@
-{% extends 'base.html' %}
+<!doctype html>
+<html lang="en">
 
-{% block title %}
-BLOCK TITLE
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='CSS/reset.css')}}" />
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='CSS/courses.css')}}" />
+    <title>
+        Courses
+    </title>
+</head>
 
-{% block content %}
-{{ super() }}
-{% if current_user.is_authenticated %}
-    <div class="container mt-5">
-            <h1>All courses</h1>
-
+<body>
+    <div class="container">
+        <div class="box_5">
+                <div class="first_part">
+                    <div class="header_content">
+                        <p class="main-title">mems.petrsu.ru</p>
+                        <p class="logo">🎓</p>
+                        <p class="sub-title"> Модульная система управления обучением </p>
+                    </div>
+                </div>
+                <div class="second_part">
+                    <div class="nav">
+                        <div class="header_menu_item"></div>
+                        <div class="header_menu_item"></div>
+                        <div class="header_menu_item"></div>
+                        <button type="button" id="btn">button</button>
+                    </div>
+                </div>  
+        </div>
+        <div class="box_1"></div>
+        <div class="box_2">
+            <div class="sidebar">
+                <div class="sidebar_header">
+                    <img class="img_sidebar" alt="pic">
+                    <div class="label_sidebar">
+                        <p class="sidebar_header_text">ФИО</p>
+                        <p class="sidebar_header_text">НОМЕР ГРУППЫ</p>
+                        <p class="sidebar_header_text">#XXXXXX</p>
+                    </div>
+                </div>
+                <nav class="navbar_links">
+                    <a href="#" class="navbar_item">Профиль</a>
+                    <a href="#" class="navbar_item">Курсы</a>
+                    <a href="#" class="navbar_item">Задания</a>
+                    <a href="#" class="navbar_item">Оценки</a>
+                    <a href="#" class="navbar_item">Сообщения</a>
+                    <a href="#" class="navbar_item">Уведомления</a>
+                    <a href="#" class="navbar_item">Настройки</a>
+                    <a href="#" class="navbar_item">Журнал</a>
+                </nav>
+        </div>
+        </div>
+        <div class="box_3">
+            <div class="sub_sidebar"></div>
+        </div>
+        {% if current_user.is_authenticated %}
+        <div class="cards">
             {% if all_courses|length > 0 %}
                 {% for el in all_courses %}
-                <div class="alert alert-info">
-                    <h2>{{ el.title }}</h2>
-                    <p> {{ el.review }}</p>
-                    <p><b> Date: {{ el.date_added }}</b></p>
-                    <a href="/courses/{{ el.id }}" class="btn btn-warning">More</a>
+                <div class="card">
+                <img class="card__image" src="https://c.wallhere.com/photos/27/d3/Darling_in_the_FranXX_Code_002_02_Strelitzia_Strelizia_DARLING_in_the_FRANXX_pink_hair_horns_No_waifu_no_laifu-1813105.jpg!d" alt="">
+                    <div class="card__content">
+                        <div class="card__left_content_part">
+                            <div class="card__title">{{ el.title }}</div>
+                            <div class="card__students_count">25 студентов</div>
+                        </div>
+                        <div class="card__right_content_part">
+                            <a href="/courses/{{ el.id }}" id="btn_about_course">Подробнее</a>
+                            <div class="card__teacher">
+                                Teacher: {{ el.user.e_mail }}</div>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             {% else %}
             <p> There is no courses!</p>
-        {% endif %}
-    </div>
-{% else %}
- <div class="container mt-5">
+            {% endif %}
+        {% else %}
+         <div class="container mt-5">
             <h1 class="display-4">You must be logged in to access!</h1>
             <p class="lead mb-0" >Go to  <a href="{{ url_for('login')}}" class="text-black">
-                    <u>login page</u></a>
-        </p>
- </div>
-
-{% endif %}
-{% endblock %}
+            <u>login page</u></a>
+            </p>
+         </div>
+        {% endif %}
+        </div>
+    <div id="footer">
+    </div>
+</body>
+</html>
