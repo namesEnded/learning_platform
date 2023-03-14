@@ -1,12 +1,11 @@
 import os
-
 import database
 from dotenv import load_dotenv
 from sqlalchemy import exc
 from database import db
 from flask import Flask, render_template, url_for, request, redirect, flash, session, abort
 import commands
-from models import Course, Menu, User, Role
+from models import Course, Menu, User, Role, Group, Subject
 from flask_migrate import Migrate
 from forms import LoginForm, SignupForm
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -31,15 +30,16 @@ migrate = Migrate(app, db)
 #              {"name": "Create course", "url": "/create_course"},
 #              {"name": "Courses", "url": "/courses"}]
 
+
+
 # Need to login-flask
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 @login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
+def load_user(user_uuid):
+    return User.query.get(user_uuid)
 
 def menu_items():
     try:
@@ -99,7 +99,23 @@ def courses():
         except exc.SQLAlchemyError as ex:
             flash('ERROR: error while getting date', category='danger')
             return render_template('error.html', ex=ex.code)
-        return render_template('courses.html', title="Courses", all_courses=all_courses, menuItems=menu_items())
+        # course_subject = { 'Subjects': { },
+        #                    'Courses' : { }}
+        # course_subject = {'Subjects': {}, 'Courses': {}}
+        # course_subject = {0 : {0: 'course'}}
+        course_subject = {}      
+        # subjects = {0 : 'subject'}
+        subjects = {}
+        tab_id=0
+        item_id=0
+        for subject in Subject.query.all():
+            tab_id=tab_id+1
+            subjects[tab_id]=subject.name
+            for course in subject.courses:
+                item_id=item_id+1
+                course_subject[tab_id]={}
+                course_subject[tab_id][item_id] = course
+        return render_template('courses.html', title="Courses", all_courses=all_courses, menuItems=menu_items(),subjects=subjects,course_subject=course_subject )
 
     elif request.method == "POST":
         user = current_user
@@ -135,10 +151,10 @@ def courses():
 def course_new():
     return render_template('create_course.html', title="Create course", menuItems=menu_items())
 
-@app.route('/courses/<int:course_id>/delete', methods=['POST'])
+@app.route('/courses/<uuid:course_uuid>/delete', methods=['POST'])
 @login_required
-def course_delete(course_id):
-    course = Course.query.get_or_404(course_id)
+def course_delete(course_uuid):
+    course = Course.query.get_or_404(course_uuid)
     try:
         db.session.delete(course)
         db.session.commit()
@@ -147,16 +163,16 @@ def course_delete(course_id):
     except exc.SQLAlchemyError as ex:
         return "ERROR: error while deleting course"
 
-@app.route('/courses/<int:course_id>/edit', methods=['POST','GET'])
+@app.route('/courses/<uuid:course_uuid>/edit', methods=['POST','GET'])
 @login_required
-def course_update(course_id):
+def course_update(course_uuid):
     if request.method == "GET":
-        course = Course.query.get(course_id)
+        course = Course.query.get(course_uuid)
         if not course:
             return render_template('page404.html', title="Page not found", menuItems=menu_items()), 404
         return render_template('course_update.html', title="Update course", course=course, menuItems=menu_items())
     elif request.method == "POST":
-        course = Course.query.get(course_id)
+        course = Course.query.get(course_uuid)
         course.title = request.form['title']
         course.review = request.form['intro']
         course.text_content = request.form['text']
@@ -168,10 +184,10 @@ def course_update(course_id):
     else:
         return render_template('page405.html', title="Method Not Allowed", menuItems=menu_items()), 405
 
-@app.get('/courses/<int:course_id>')
+@app.get('/courses/<uuid:course_uuid>')
 @login_required
-def course_detail(course_id):
-    course = Course.query.get(course_id)
+def course_detail(course_uuid):
+    course = Course.query.get(course_uuid)
     if not course:
         return render_template('page404.html', title="Page not found", menuItems=menu_items()), 404
     else:
@@ -237,7 +253,7 @@ def login():
         is_submitted = True
 
     if login_form.validate_on_submit():
-        user = User.query.filter_by(e_mail=login_form.email.data).first()
+        user = User.query.filter_by(email=login_form.email.data).first()
         if user:
             password = login_form.password.data
             if check_password_hash(user.password_hash, password):
@@ -271,7 +287,7 @@ def dashboard():
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    default_role = Role.query.get(1)
+    default_role = Role.get_default()
     signup_form = SignupForm(role_id=default_role)
     is_submitted = False
     is_validate = False
@@ -295,12 +311,13 @@ def signup():
     print("signup_form.validate_on_submit(): {}".format(signup_form.validate_on_submit()))
 
     if signup_form.validate_on_submit():
-        user = User.query.filter_by(e_mail=signup_form.email.data).first()
+        user = User.query.filter_by(email=signup_form.email.data).first()
         if user is None:
             role = Role.query.get(signup_form.role_id.data.id)
             password_hash = generate_password_hash(signup_form.password_hash.data, "sha256")
-            signup_user = User(name=signup_form.name.data, username=signup_form.username.data, role=role,
-                               password_hash=password_hash, e_mail=signup_form.email.data)
+            signup_user = User(name=signup_form.name.data, username=signup_form.username.data,
+                               password_hash=password_hash, email=signup_form.email.data)
+            signup_user.roles.append(Role(name=role.name))
             is_successful = True
             db.session.add(signup_user)
             db.session.commit()
@@ -318,6 +335,16 @@ def signup():
 @app.route('/test')
 def test():
     return render_template('test.html')
+
+@app.route('/groups')
+@login_required
+def groups():
+    group_name_user_name = {}
+    for g in Group.query.all():
+        for u in g.in_users:
+            group_name_user_name[u.username] = g.name
+    return render_template('group.html', group_name_user_name=group_name_user_name)
+
 
 @app.route('/profile/<email>')
 @login_required

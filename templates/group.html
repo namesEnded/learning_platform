@@ -1,0 +1,38 @@
+
+
+{% extends 'base.html' %}
+
+{% block css_style %}
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='CSS/group.css')}}" />
+{% endblock %}
+
+{% block content %}
+{{ super() }}
+<section id="main_section">
+  <!--for demo wrap-->
+  <h1>Fixed Table header</h1>
+  <div class="tbl-header">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>User</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="tbl-content">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tbody>
+        {% for k, v in group_name_user_name.items() %}
+        <tr>
+                           <td> {{ v }} </td>
+                           <td> {{ k }} </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+<script type="text/javascript" src="{{ url_for('static', filename='js/group.js')}}"></script>
+{% endblock %}

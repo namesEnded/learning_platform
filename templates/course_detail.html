@@ -8,8 +8,8 @@
         <h1>{{ course.title }}</h1>
         <p> {{ course.text_content}}</p>
         <p><b> Date: {{ course.date_added }}</b></p>
-        <form method="post" action="/courses/{{ course.id }}/delete">
+        <form method="post" action="/courses/{{ course.uuid }}/delete">
             <input type="submit" id="btn_about_course" value="Delete"><br>
         </form>
-        <a href="/courses/{{ course.id }}/edit" class="btn btn-success">Edit</a>
+        <a href="/courses/{{ course.uuid }}/edit" class="btn btn-success">Edit</a>
 {% endblock %}

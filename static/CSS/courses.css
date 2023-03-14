@@ -135,7 +135,7 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	box-shadow: 0px 2px 4px rgba(172, 191, 202, 0.5);
 }
 
-#btn, #btn_about_course {
+#btn, #btn_about_course, #all_courses, #sub_courses, #filter_button {
 	margin: 0;
 	justify-content: center;
 	align-items: center;
@@ -162,12 +162,29 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	transition: 300ms;
 }
 
-#btn:hover, #btn_about_course:hover {
+
+#all_courses, #sub_courses, #filter_button{
+	background: #D6E3ED;
+	color: #2B2D2F;
+}
+
+#all_courses:hover, #sub_courses:hover, #filter_button:hover{
+	background: #BDCCD4;
+	box-shadow: 0px 2px 4px rgba(172, 191, 202, 0.5);
+	transition: 300ms;
+}
+
+#all_courses:active, #sub_courses:active, #filter_button:active{
+	background: #ACBFCA;
+	box-shadow: 0px 2px 4px rgba(172, 191, 202, 0.5);
+}
+
+#btn:hover, #btn_about_course:hover{
 	background: #4F6A7D;
 	box-shadow: 0px 2px 4px rgba(172, 191, 202, 0.5);
 	transition: 300ms;
 }
-#btn:active, #btn_about_course:active {
+#btn:active, #btn_about_course:active{
 	background: #3D5261;
 	box-shadow: 0px 2px 4px rgba(172, 191, 202, 0.5);
 }
@@ -176,6 +193,49 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	width: 107px;
 	height: 25px;
 }
+
+#filter_button{
+	width: 44px;
+	height: 25px;
+	display: block;
+}
+
+#all_courses{
+/*	width: 120px;*/
+	height: 25px;
+	display: block;
+}
+
+#sub_courses{
+	height: 25px;
+	display: block;
+}
+
+.search_panel{
+	margin-right: auto;
+	height: 25px;
+	padding-left: 14px;
+	padding-right: 14px;
+	background: #D6E3ED;
+	border-radius: 10px;
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 16px;
+	letter-spacing: 0.05em;
+	text-transform: capitalize;
+	color: #6F767B;
+	border:none;
+	transition: 300ms;
+	outline: none;
+	width: 412px;
+}
+
+.search_panel::placeholder{
+	color: #6F767B;
+}
+
 
 .login_form {
 	margin-top: 240px;
@@ -197,6 +257,7 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	text-transform: uppercase;
 	color: #000000;
 }
+
 
 .sub_login_title {
 	margin-bottom: 25px;
@@ -293,7 +354,7 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	box-shadow: 0px 2px 4px rgba(172, 191, 202, 0.5);
 }
 
-.sidebar, .sub_sidebar{
+.navbar, .sidebar{
 	margin: 0px;
 	background: rgba(216, 227, 234, 0.3);
 	display: flex;
@@ -308,7 +369,7 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	gap: 40px;
 }
 
-.sidebar_header{
+.navbar_header{
 	display: flex;
 	justify-content: center;
 	flex-direction: row;
@@ -316,7 +377,7 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	gap: 10px;
 }
 
-.sidebar_header_text{
+.navbar_header_text,.sidebar_header_text,.sidebar_subheader_text  {
 	margin:0px;
 	font-family: 'Open Sans';
 	font-style: normal;
@@ -328,7 +389,18 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	color: rgba(0, 0, 0, 0.8);
 }
 
-.img_sidebar{
+.sidebar_header_text, .sidebar_subheader_text {
+	text-align: center;
+	font-size: 14px;
+}
+
+.sidebar_subheader_text {
+	font-size: 10px;
+	line-height: 11px;
+}
+
+
+.img_navbar{
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -338,7 +410,7 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	border-radius: 100px;
 }
 
-.label_sidebar{
+.label_navbar, .label_sidebar{
 	display: flex;
 	justify-content: start;
 	flex-direction: column;
@@ -362,7 +434,7 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	align-items: center;
 
 	width: 220px;
-	height: 29px;
+	height: 30px;
 
 	background: #D6E3ED;
 	border-radius: 10px;
@@ -415,6 +487,16 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	line-height: 16px;
 	letter-spacing: 0.05em;
 	gap: 5px;
+}
+
+.courses_menu{
+	margin-top: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+	display: flex;
+	justify-content: start;
+	flex-direction: column;
+	align-items: center;
 }
 
 .estim_remark_bold_text{
@@ -653,7 +735,7 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 
 .button-transition-course:active{
 	background: #3D5261;
-	box-shadow: 0px 2px 4px rgba(172, 191, 202, 0.5);	
+	box-shadow: 0px 2px 4px rgba(172, 191, 202, 0.5);
 }
 
 [class^="box_"] {
@@ -663,23 +745,51 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 }
 
 .container{
+    min-width:880px;
 	display: grid;
 	grid-template-rows: auto 60px 55px 1fr 1fr 1fr;
 	grid-template-columns: repeat(5, 1fr);
 
 	grid-template-areas:
-	 "H H H H H "
-	 "N . . . N2"
-    "N T T T N2"
-    "N B B B N2"
-    ". B B B . "
-    "F F F F F "
+	"H H H H H "
+	"N . . . N2"
+	"N T T T N2"
+	"N B B B N2"
+	". B B B . "
+	"F F F F F "
 }
 
 .box_1 {
-  grid-area: T;
-  background: #F61;
+	grid-area: T;
+	display: flex;
+	flex-direction: row;
+	align-items: start;
+	min-width: 320px;
+	justify-content: space-between;
+	gap:20px;
 }
+
+.tools_container_left
+{
+	display: flex;
+	flex-direction: row;
+	align-items: start;
+	justify-content: start;
+	gap:20px;
+	flex-wrap: nowrap;
+
+}
+
+.tools_container_right
+{
+	display: flex;
+	flex-direction: row;
+	align-items: start;
+	justify-content: end;
+	gap:20px;
+	flex-wrap: nowrap;
+}
+
 .box_2 {
   align-self: start;
   justify-self: end;
@@ -727,11 +837,11 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 }
 
 .cards * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 .card {
-    display: block;
-    color: #000000;
+	display: block;
+	color: #000000;
 }
 
 .card__image {
@@ -810,4 +920,177 @@ body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
 	display: flex;
 	justify-content: end;
 	padding: 15px 15px 0px 0px;
+}
+
+@media screen and (max-width: 1340px) {
+	.sub-title {
+    display: none;
+	}
+
+	#login{
+		display: none;
+	}
+
+	#filter_button{
+		display: none;
+	}
+
+}
+
+@media screen and (max-width: 1000px) {
+	[id^="hm_"] {
+  	display: none;
+	}
+
+	.first_part {
+	padding-left:60px;
+}
+
+.second_part {
+	padding-right:60px;
+}
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    max-width: 600px;
+    width: 100%;
+    gap:10px;
+}
+
+.wrapper input {
+    display: none;
+}
+
+.wrapper label {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 16px;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: rgba(0, 0, 0, 0.8);
+	text-transform: uppercase;
+	display: flex;
+	width: 100%;
+	height: 30px;
+	cursor: pointer;
+	background: #D6E3ED;
+	border-radius: 10px;
+	user-select: none;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	transition: max-height, .5s;
+}
+
+.wrapper label div{
+	padding-right: 15px;
+	padding-left: 15px;
+}
+/*label div:first-child {
+    width: 100%;
+    line-height: 45px;
+    margin-left: 10px;
+    font-size: 1.2em;
+}*/
+
+[class^="tab"]{
+    width: 100%;
+}
+
+[class^="wrap-"]{
+    width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+	align-items: end;
+
+}
+
+.cross{
+}
+
+.cross:before,.cross:after {
+    content: '';
+    border-top: 2px solid #3E474F;
+    width: 10px;
+    display: block;
+    transition: 0.3s;
+}
+
+.cross:after {
+    transform: rotate(90deg);
+    margin-top: -2px;
+}
+
+.content {
+    box-sizing: border-box;
+    font-size: 0.9em;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height, .5s;
+}
+
+.wrapper input:checked ~ label {
+		background: #ACBFCA;
+		transition: max-height, .5s;
+}
+
+.wrapper input:checked ~ .content {
+    max-height: 400px;
+    transition: max-height, 1s;
+}
+
+.wrapper input:checked ~ label .cross:before {
+    transform: rotate(180deg);
+}
+
+.wrapper input:checked ~ label .cross:after {
+    transform: rotate(0deg);
+}
+
+.sub_tab{
+	width: 90%;
+	padding-right: 0;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height, .5s;
+}
+
+.сourse{
+    width: 90%;
+    margin-top:10px;
+    padding-right: 0;
+    max-height: 0;
+    overflow: hidden;
+}
+
+
+.sub_tab .sub_tab-wrap{
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+    justify-content: start;
+    transition: max-height, .4s;
+}
+
+.sub_tab label{
+  box-shadow: none;
+  margin-top:10px;
+}
+
+.wrapper input:checked ~ .sub_tab {
+    max-height: 400px;
+    transition: 1s;
+}
+
+.wrapper input:checked ~ .sub_tab [class~='sub_tab-wrap']:last-child  {
+    margin-bottom: 10px;
+    transition: max-height, .1s;
 }

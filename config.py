@@ -20,7 +20,6 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = uri
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-
 class ProductionConfig(Config):
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = uri

@@ -1,63 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='CSS/reset.css')}}" />
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='CSS/courses.css')}}" />
-    <title>
-        Courses
-    </title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='CSS/courses.css')}}" />
+	<title>Document</title>
 </head>
-
 <body>
-    <div class="container">
-        <div class="box_5">
-                <div class="first_part">
-                    <div class="header_content">
-                        <p class="main-title">mems.petrsu.ru</p>
-                        <p class="logo">🎓</p>
-                        <p class="sub-title"> Модульная система управления обучением </p>
-                    </div>
-                </div>
-                <div class="second_part">
-                    <div class="nav">
-                        <div class="header_menu_item"></div>
-                        <div class="header_menu_item"></div>
-                        <div class="header_menu_item"></div>
-                        <button type="button" id="btn">button</button>
-                    </div>
-                </div>  
-        </div>
-        <div class="box_1"></div>
-        <div class="box_2">
-            <div class="sidebar">
-                <div class="sidebar_header">
-                    <img class="img_sidebar" alt="pic">
-                    <div class="label_sidebar">
-                        <p class="sidebar_header_text">ФИО</p>
-                        <p class="sidebar_header_text">НОМЕР ГРУППЫ</p>
-                        <p class="sidebar_header_text">#XXXXXX</p>
-                    </div>
-                </div>
-                <nav class="navbar_links">
-                    <a href="#" class="navbar_item">Профиль</a>
-                    <a href="#" class="navbar_item">Курсы</a>
-                    <a href="#" class="navbar_item">Задания</a>
-                    <a href="#" class="navbar_item">Оценки</a>
-                    <a href="#" class="navbar_item">Сообщения</a>
-                    <a href="#" class="navbar_item">Уведомления</a>
-                    <a href="#" class="navbar_item">Настройки</a>
-                    <a href="#" class="navbar_item">Журнал</a>
-                </nav>
-        </div>
-        </div>
-        <div class="box_3">
-            <div class="sub_sidebar"></div>
-        </div>
+	<div class="container">
+		<div class="box_5">
+				<div class="first_part">
+					<div class="header_content">
+						<p class="main-title">mems.petrsu.ru</p>
+						<p class="logo">🎓</p>
+						<p class="sub-title"> Модульная система управления обучением </p>
+					</div>
+				</div>
+				<div class="second_part">
+					<div class="nav">
+						<div id="burger" class="header_menu_item"></div>
+						<div id="hm_2" class="header_menu_item"></div>
+						<div id="hm_3" class="header_menu_item"></div>
+						<button type="button" id="btn">button</button>
+					</div>
+				</div>
+		</div>
+		<div class="box_1">
+			<div class="tools_container_left">
+				<button type="button" id="all_courses">ВСЕ</button>
+				<button type="button" id="sub_courses">ПОДПИСКИ</button>
+			</div>
+			<div class="tools_container_right">
+				<input id="login" type="text" name="login_field" placeholder="Найти курс" class="search_panel">
+				<button type="button" id="filter_button">Ф</button>
+			</div>
+		</div>
+		<div class="box_2">
+			<div class="navbar">
+				<div class="navbar_header">
+					<img class="img_navbar" alt="pic">
+					<div class="label_navbar">
+						<p class="navbar_header_text">ФИО</p>
+						<p class="navbar_header_text">НОМЕР ГРУППЫ</p>
+						<p class="navbar_header_text">#XXXXXX</p>
+					</div>
+				</div>
+				<nav class="navbar_links">
+					<a href="#" class="navbar_item">Профиль</a>
+					<a href="#" class="navbar_item">Курсы</a>
+					<a href="#" class="navbar_item">Задания</a>
+					<a href="#" class="navbar_item">Оценки</a>
+					<a href="#" class="navbar_item">Сообщения</a>
+					<a href="#" class="navbar_item">Уведомления</a>
+					<a href="#" class="navbar_item">Настройки</a>
+					<a href="#" class="navbar_item">Журнал</a>
+				</nav>
+			</div>
+		</div>
+		<div class="box_3">
+			<div class="sidebar">
+				<div class="sidebar_header">
+					<div class="label_sidebar">
+						<p class="sidebar_header_text">НАВИГАЦИЯ</p>
+						<p class="sidebar_subheader_text">группы и курсы +</p>
+						<div class="courses_menu">
+							<div class="wrapper">
+								{% for subject_id, subject_info in course_subject.items() %}
+									<div class="wrap-{{subject_id}}">
+										<input type="checkbox" id="tab-{{subject_id}}" name="tabs">
+										<label for="tab-{{subject_id}}" id=><div>{{subjects[subject_id]}}</div><div class="cross"></div></label>
+										<div class="sub_tab">
+												{% for key in subject_info %}
+													<div class="sub_tab-wrap">
+														<label>
+															<div>
+																<a href="/courses/{{subject_info[key].uuid}}">{{subject_info[key].title}}</a>
+															</div>
+														</label>
+													</div>
+
+												{% endfor %}
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
         {% if current_user.is_authenticated %}
         <div class="cards">
             {% if all_courses|length > 0 %}
@@ -70,9 +104,9 @@
                             <div class="card__students_count">25 студентов</div>
                         </div>
                         <div class="card__right_content_part">
-                            <a href="/courses/{{ el.id }}" id="btn_about_course">Подробнее</a>
+                            <a href="/courses/{{ el.uuid }}" id="btn_about_course">Подробнее</a>
                             <div class="card__teacher">
-                                Teacher: {{ el.user.e_mail }}</div>
+                                Teacher: {{ el.user.email }}</div>
                         </div>
                     </div>
                 </div>
@@ -89,7 +123,6 @@
          </div>
         {% endif %}
         </div>
-    <div id="footer">
-    </div>
+	</div>
 </body>
 </html>
