@@ -34,7 +34,10 @@ class DevelopmentConfig(Config):
     ENV = "development"
     DEVELOPMENT = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/learning_platform'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/learning_platform'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql://namesEnded:OeG0YLSTVEK9@ep-steep-glitter-227283.eu-central-1.aws.neon.tech/neondb'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://yvjohiyh:cpbx7_yT0D0W3BzAUcpJfvunNplj-CRW@mouse.db.elephantsql.com/yvjohiyh'
+
 
 
 class TestingConfig(Config):

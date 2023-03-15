@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import MetaData
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, REAL
 from flask_sqlalchemy import SQLAlchemy
 import uuid
 from sqlalchemy.orm import backref, declarative_base
@@ -133,7 +133,7 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users, backref='roled')
     courses = db.relationship('Course', back_populates="user")
     groups = db.relationship('Group', back_populates="owner")
-
+    # tests = db.relationship("Test", back_populates="creator")
     @property
     def id(self):
         return self.uuid
@@ -250,3 +250,56 @@ class Subject(db.Model):
             'subject_name': self.name,
             'description': self.description,
         }
+
+# class Test(db.Model):
+#     __tablename__ = 'tests'
+#     uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+#     name = db.Column(db.String(150), nullable=False)
+#
+#     creator_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('users.uuid'), nullable=False)
+#     creator = db.relationship("User", back_populates="tests")
+#
+#     assessment_type_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('assessment_type.uuid'), nullable=False)
+#     assessment_type = db.relationship("AssessmentType", back_populates="tests")
+#
+#
+#     description = db.Column(db.String(300))
+#     duration = db.Column(db.Integer)
+#     passing_score = db.Column(REAL, default=0.0)
+#     number_of_questions = db.Column(db.Integer)
+#     attempts = db.Column(db.Integer)
+#
+#     randomize_questions = db.Column(db.Boolean, nullable=False, default=False)
+#     randomize_answers = db.Column(db.Boolean, nullable=False, default=False)
+#     is_active = db.Column(db.Boolean, nullable=False, default=False)
+#     show_result = db.Column(db.Boolean, nullable=False, default=False)
+#     multiply_view = db.Column(db.Boolean, nullable=False, default=False)
+#     time_expired_questions = db.Column(db.Boolean, nullable=False, default=False)
+#
+#     start_date = db.Column(db.DateTime())
+#     end_date = db.Column(db.DateTime())
+#     date_created = db.Column(db.DateTime())
+#     date_modified = db.Column(db.DateTime())
+#
+#
+#     def __init__(self, name, description):
+#         self.name = name
+#         self.description = description
+#
+#     def __repr__(self):
+#         return '< Subject saved: uuid {}>'.format(self.id)
+#
+#     @classmethod
+#     def find_subject_by_name(cls, subject_name):
+#         return cls.query.filter_by(name=subject_name).first()
+#
+#     @classmethod
+#     def isExist(cls, subject_name):
+#         return True if cls.query.filter_by(name=subject_name).first() else False
+#
+#     def serialize(self):
+#         return {
+#             'uuid': str(self.uuid),
+#             'subject_name': self.name,
+#             'description': self.description,
+#         }
