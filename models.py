@@ -1,12 +1,10 @@
 from datetime import datetime
 
-from sqlalchemy import MetaData
-from sqlalchemy.dialects.postgresql import UUID, REAL, TEXT
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import UUID, REAL, TEXT, JSON
 import uuid
 from sqlalchemy.orm import backref, declarative_base
 from database import db
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from flask_login import UserMixin
 
 
@@ -28,6 +26,10 @@ roles_users = db.Table('roles_users',
 subject_course = db.Table('subject_course',
         db.Column('course_uuid', UUID(as_uuid=True), db.ForeignKey('courses.uuid')),
         db.Column('subject_uuid', UUID(as_uuid=True), db.ForeignKey('subjects.uuid')))
+
+test_questions = db.Table('test_questions',
+        db.Column('test_uuid', UUID(as_uuid=True), db.ForeignKey('tests.uuid'), primary_key=True),
+        db.Column('question_uuid', UUID(as_uuid=True), db.ForeignKey('questions.uuid'), primary_key=True))
 
 class Course(db.Model):
     __tablename__ = 'courses'
@@ -133,7 +135,11 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users, backref='roled')
     courses = db.relationship('Course', back_populates="creator")
     groups = db.relationship('Group', back_populates="owner")
-    # tests = db.relationship("Test", back_populates="creator")
+    questions = db.relationship("Question", back_populates="creator", foreign_keys = 'Question.creator_uuid')
+    tests = db.relationship("Test", back_populates="creator", )
+    moderated_questions = db.relationship("Question", back_populates="moderator", foreign_keys='Question.moderator_uuid')
+    answers_tests = db.relationship('AnswersTest', back_populates='user')
+    test_results = db.relationship('TestResult', back_populates='user')
 
     @property
     def id(self):
@@ -146,7 +152,7 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def __init__(self, name,username, password_hash, email, is_active, first_name, last_name):
+    def __init__(self,username, password_hash, email, is_active, first_name, last_name):
         self.username = username
         self.password_hash = password_hash
         self.email = email
@@ -162,8 +168,8 @@ class User(db.Model, UserMixin):
         return cls.query.filter_by(username=username).first()
 
     @classmethod
-    def find_user_by_uuid(cls, username):
-        return cls.query.filter_by(uuid=uuid).first()
+    def find_user_by_uuid(cls, user_uuid):
+        return cls.query.filter_by(uuid=user_uuid).first()
 
     def serialize(self):
         return {
@@ -272,6 +278,10 @@ class Test(db.Model):
 
     creator = db.relationship("User", back_populates="tests")
     assessment_type = db.relationship("AssessmentType", back_populates="tests")
+    questions = db.relationship("Question", secondary=test_questions, backref="tests")
+    answers_users = db.relationship('AnswersTest', back_populates='test')
+    users_results = db.relationship('TestResult', back_populates='test')
+
     def __init__(self, name, description, creator_uuid, assessment_type_uuid, duration, passing_score, number_of_questions,attempts,
                  randomize_questions, randomize_answers, is_active, show_result, multiply_view, time_expired_questions,
                  start_date, end_date, date_created, date_modified):
@@ -358,47 +368,189 @@ class AssessmentType(db.Model):
         }
 
 
-# class Question(db.Model):
-#     __tablename__ = 'questions'
-#     uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
-#     content = db.Column(TEXT, nullable=False)
-#     date_created = db.Column(db.DateTime())
-#     date_modified = db.Column(db.DateTime())
-#     weight = db.Column(REAL, default=0.0)
-#     expiration_time = db.Column(REAL, default=0.0)
-#     description = db.Column(db.String(300))
-#
-#     type_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('question_types.uuid'), nullable=False)
-#     creator_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('users.uuid'), nullable=False)
-#     moderator_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('users.uuid'), nullable=False)
-#     difficulty_level_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('difficulty_levels.uuid'), nullable=False)
-#
-#
-#     def __init__(self, name, description, weight, expiration_time):
-#         self.name = name
-#         self.description = description
-#         self.weight = weight
-#         self.expiration_time=expiration_time
-#
-#
-#     def __repr__(self):
-#         return '< AssessmentType: name {}>'.format(self.name)
-#
-#     @classmethod
-#     def find_by_name(cls, assessment_type):
-#         return cls.query.filter_by(name=assessment_type).first()
-#
-#     @classmethod
-#     def isExist(cls, assessment_type):
-#         return True if cls.query.filter_by(name=assessment_type).first() else False
-#
-#     def serialize(self):
-#         return {
-#             'uuid': self.uuid,
-#             'content': self.content,
-#             'date_created': self.date_created,
-#             'date_modified': self.date_modified,
-#             'weight': self.weight,
-#             'expiration_time': self.expiration_time,
-#             'description': self.description,
-#         }
+class Question(db.Model):
+    __tablename__ = 'questions'
+    uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+    content = db.Column(TEXT, nullable=False)
+    date_created = db.Column(db.DateTime())
+    date_modified = db.Column(db.DateTime())
+    weight = db.Column(REAL, default=0.0)
+    expiration_time = db.Column(REAL, default=0.0)
+    description = db.Column(db.String(300))
+
+    type_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('question_types.uuid'), nullable=False)
+    creator_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('users.uuid'), nullable=False)
+    moderator_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('users.uuid'), nullable=False)
+    difficulty_level_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('difficulty_levels.uuid'), nullable=False)
+
+    type = db.relationship("QuestionType", back_populates="questions")
+    creator = db.relationship("User", foreign_keys=[creator_uuid], back_populates="questions")
+    moderator = db.relationship("User", foreign_keys=[moderator_uuid], back_populates="moderated_questions")
+    difficulty_level = db.relationship("DifficultyLevel", back_populates="questions")
+    answers = db.relationship("Answer", back_populates="question")
+    tests_users = db.relationship('AnswersTest', back_populates='question')
+    def __init__(self, name, description, weight, expiration_time):
+        self.name = name
+        self.description = description
+        self.weight = weight
+        self.expiration_time=expiration_time
+
+
+    def __repr__(self):
+        return '< AssessmentType: name {}>'.format(self.name)
+
+    @classmethod
+    def find_by_name(cls, question_name):
+        return cls.query.filter_by(name=question_name).first()
+
+    @classmethod
+    def isExist(cls, question_name):
+        return True if cls.query.filter_by(name=question_name).first() else False
+
+    def serialize(self):
+        return {
+            'uuid': self.uuid,
+            'content': self.content,
+            'date_created': self.date_created,
+            'date_modified': self.date_modified,
+            'weight': self.weight,
+            'expiration_time': self.expiration_time,
+            'description': self.description,
+        }
+
+class QuestionType(db.Model):
+    __tablename__ = 'question_types'
+    uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    description_template = db.Column(db.String(350), nullable=False)
+
+    questions = db.relationship("Question", back_populates="type")
+
+    def __init__(self, name, description_template):
+        self.name = name
+        self.description_template = description_template
+    def __repr__(self):
+        return '< QuestionType: name {}>'.format(self.name)
+
+    @classmethod
+    def find_by_name(cls, question_type):
+        return cls.query.filter_by(name=question_type).first()
+
+    @classmethod
+    def isExist(cls, question_type):
+        return True if cls.query.filter_by(name=question_type).first() else False
+
+    def serialize(self):
+        return {
+            'uuid': self.uuid,
+            'name': self.name,
+            'description_template': self.description_template
+        }
+
+class DifficultyLevel(db.Model):
+    __tablename__ = 'difficulty_levels'
+    uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    
+    questions = db.relationship("Question", back_populates="difficulty_level")
+    def __init__(self, name, description_template):
+        self.name = name
+        self.description_template = description_template
+    def __repr__(self):
+        return '< Difficulty level: name {}>'.format(self.name)
+
+    @classmethod
+    def find_by_name(cls, difficulty_level):
+        return cls.query.filter_by(name=difficulty_level).first()
+
+    @classmethod
+    def isExist(cls, difficulty_level):
+        return True if cls.query.filter_by(name=difficulty_level).first() else False
+
+    def serialize(self):
+        return {
+            'uuid': self.uuid,
+            'name': self.name,
+        }
+
+class Answer(db.Model):
+    __tablename__ = 'answers'
+    uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+    question_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('questions.uuid'), nullable=False)
+    name = db.Column(db.String(150), nullable=False)
+    content = db.Column(TEXT, nullable=False)
+    is_correct = db.Column(db.Boolean, nullable=False, default=False)
+
+    question = db.relationship("Question", back_populates="answers")
+
+    def __init__(self, name, description_template):
+        self.name = name
+        self.description_template = description_template
+    def __repr__(self):
+        return '< QuestionType: name {}>'.format(self.name)
+
+    @classmethod
+    def find_by_name(cls, question_type):
+        return cls.query.filter_by(name=question_type).first()
+
+    @classmethod
+    def isExist(cls, question_type):
+        return True if cls.query.filter_by(name=question_type).first() else False
+
+    def serialize(self):
+        return {
+            'uuid': self.uuid,
+            'name': self.name,
+            'description_template': self.description_template
+        }
+
+
+class AnswersTest(db.Model):
+    __tablename__ = 'answers_test'
+    uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+    user_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('users.uuid'), nullable=False)
+    test_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('tests.uuid'), nullable=False)
+    question_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('questions.uuid'), nullable=False)
+    user = db.relationship('User', back_populates='answers_tests')
+    test = db.relationship('Test', back_populates='answers_users')
+    question = db.relationship('Question', back_populates='tests_users')
+    def __repr__(self):
+        return f'{self.uuid} {self.user_uuid} {self.test_uuid} {self.question_uuid}'
+
+
+class TestResult(db.Model):
+    __tablename__ = 'test_results'
+    uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+    user_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('users.uuid'), nullable=False)
+    test_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('tests.uuid'), nullable=False)
+
+    score = db.Column(REAL, default=0.0)
+    max_score = db.Column(REAL, default=0.0)
+    start_date = db.Column(db.DateTime())
+    end_date = db.Column(db.DateTime())
+    answered_questions_json =  db.Column(JSON)
+
+    user = db.relationship('User', back_populates='test_results')
+    test = db.relationship('Test', back_populates='users_results')
+
+    def __init__(self, name, description_template):
+        self.name = name
+        self.description_template = description_template
+
+    def __repr__(self):
+        return '< QuestionType: name {}>'.format(self.name)
+
+    @classmethod
+    def find_by_name(cls, question_type):
+        return cls.query.filter_by(name=question_type).first()
+
+    @classmethod
+    def isExist(cls, question_type):
+        return True if cls.query.filter_by(name=question_type).first() else False
+
+    def serialize(self):
+        return {
+            'uuid': self.uuid,
+            'name': self.name,
+            'description_template': self.description_template
+        }
