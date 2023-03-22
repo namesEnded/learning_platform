@@ -315,8 +315,8 @@ def signup():
         if user is None:
             role = Role.query.get(signup_form.role_id.data.id)
             password_hash = generate_password_hash(signup_form.password_hash.data, "sha256")
-            signup_user = User(name=signup_form.name.data, username=signup_form.username.data,
-                               password_hash=password_hash, email=signup_form.email.data)
+            signup_user = User(first_name=signup_form.name.data, last_name=signup_form.name.data, username=signup_form.username.data,
+                               password_hash=password_hash, email=signup_form.email.data, is_active=True)
             signup_user.roles.append(Role(name=role.name))
             is_successful = True
             db.session.add(signup_user)
