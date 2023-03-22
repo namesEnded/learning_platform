@@ -126,7 +126,7 @@ def courses():
         else:
             review = request.form['intro']
             text_content = request.form['text']
-            course = Course(title=title, review=review, text_content=text_content, user=user)
+            course = Course(title=title, review=review, text_content=text_content, creator_uuid=user.uuid)
             try:
 
                 if len(title) == 0:
@@ -313,18 +313,24 @@ def signup():
     if signup_form.validate_on_submit():
         user = User.query.filter_by(email=signup_form.email.data).first()
         if user is None:
-            role = Role.query.get(signup_form.role_id.data.id)
             password_hash = generate_password_hash(signup_form.password_hash.data, "sha256")
-            signup_user = User(name=signup_form.name.data, username=signup_form.username.data,
-                               password_hash=password_hash, email=signup_form.email.data)
-            signup_user.roles.append(Role(name=role.name))
+            role = Role.query.get(signup_form.role_id.data.id)
+            signup_user = User(
+                email = signup_form.email.data,
+                password_hash = password_hash,
+                first_name = signup_form.first_name.data,
+                last_name = signup_form.last_name.data,
+                username = signup_form.username.data,
+                date_of_birth = signup_form.date_of_birth.data,
+                phone_number = signup_form.phone_number.data,
+                country = signup_form.country.data,
+                city = signup_form.city.data,
+                gender = bool(int(signup_form.gender.data)),
+                role = role)
             is_successful = True
             db.session.add(signup_user)
             db.session.commit()
-            signup_form.name.data = ''
-            signup_form.username.data = ''
-            signup_form.email.data = ''
-            signup_form.password_hash.data = ''
+            # signup_form = SignupForm(formdata=None)
             flash("User Added Successfully!")
         else:
             flash("Error! Email already in use")

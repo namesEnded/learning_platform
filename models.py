@@ -125,11 +125,22 @@ class User(db.Model, UserMixin):
 
     # User information
     is_active = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
+    is_verified = db.Column(db.Boolean(),default=False, nullable=False, server_default='0')
     email_confirmed_at = db.Column(db.DateTime())
     first_name = db.Column(db.String(100), nullable=False, server_default='')
+    date_str = "2022-01-01 12:00:00"
+    date_format = "%Y-%m-%d %H:%M:%S"
+    date_of_birth = db.Column(db.Date, nullable=False, server_default='2022-01-01 12:00:00')
+    phone_number = db.Column(db.String(20))
+    country = db.Column(db.String(50))
+    city = db.Column(db.String(50))
+    gender = db.Column(db.Boolean(), nullable=False, server_default='1')
+    created_datetime = db.Column(db.DateTime, default=datetime.utcnow)
+    last_login = db.Column(db.DateTime)
+    last_password_change = db.Column(db.DateTime, default=datetime.utcnow)
     last_name = db.Column(db.String(100), nullable=False, server_default='')
-    username = db.Column(db.String(25), nullable=False)
-    password_hash = db.Column(db.String(300), nullable=False)
+    username = db.Column(db.String(25), nullable=False, server_default='')
+    password_hash = db.Column(db.String(300), nullable=False, server_default='')
 
     # Define the relationship
     roles = db.relationship('Role', secondary=roles_users, backref='roled')
@@ -152,13 +163,19 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def __init__(self,username, password_hash, email, is_active, first_name, last_name):
-        self.username = username
-        self.password_hash = password_hash
+    def __init__(self, email, password_hash, first_name, last_name, username, date_of_birth, phone_number, country, city,
+                 gender, role):
         self.email = email
-        self.is_active = is_active
+        self.password_hash = password_hash
         self.first_name = first_name
         self.last_name = last_name
+        self.username = username
+        self.date_of_birth = date_of_birth
+        self.phone_number = phone_number
+        self.country = country
+        self.city = city
+        self.gender = gender
+        self.roles.append(role)
 
     def __repr__(self):
         return '< User:email: email {}>'.format(self.email)
