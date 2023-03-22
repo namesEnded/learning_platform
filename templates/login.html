@@ -33,6 +33,9 @@ Login
     <div class="login_form">
     <div class="main_login_title">mems.petrsu.ru 🎓</div>
     <div class="sub_login_title">Модульная система управления обучением</div>
+        {% for message in get_flashed_messages() %}
+              {{ message }}
+        {% endfor %}
     <form  action="/login" method="POST" class="form-signin">
         {{ form.hidden_tag() }}
         <label for="email" class="form_title">Логин</label><br>

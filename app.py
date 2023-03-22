@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+
 import database
 from dotenv import load_dotenv
 from sqlalchemy import exc
@@ -328,6 +330,9 @@ def signup():
                 gender = bool(int(signup_form.gender.data)),
                 role = role)
             is_successful = True
+            now = datetime.now()
+            date_str = now.strftime("%Y-%m-%d %H:%M:%S")
+            signup_user.last_login = date_str
             db.session.add(signup_user)
             db.session.commit()
             # signup_form = SignupForm(formdata=None)

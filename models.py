@@ -290,8 +290,8 @@ class Test(db.Model):
 
     start_date = db.Column(db.DateTime())
     end_date = db.Column(db.DateTime())
-    date_created = db.Column(db.DateTime())
-    date_modified = db.Column(db.DateTime())
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_modified = db.Column(db.DateTime, default=datetime.utcnow)
 
     creator = db.relationship("User", back_populates="tests")
     assessment_type = db.relationship("AssessmentType", back_populates="tests")
@@ -301,7 +301,7 @@ class Test(db.Model):
 
     def __init__(self, name, description, creator_uuid, assessment_type_uuid, duration, passing_score, number_of_questions,attempts,
                  randomize_questions, randomize_answers, is_active, show_result, multiply_view, time_expired_questions,
-                 start_date, end_date, date_created, date_modified):
+                 start_date, end_date):
         self.name = name
         self.description = description
         self.creator_uuid = creator_uuid
@@ -318,8 +318,6 @@ class Test(db.Model):
         self.time_expired_questions = time_expired_questions
         self.start_date = start_date
         self.end_date = end_date
-        self.date_created = date_created
-        self.date_modified = date_modified
 
     def __repr__(self):
         return '< Test: uuid {}>'.format(self.uuid)
@@ -406,12 +404,17 @@ class Question(db.Model):
     difficulty_level = db.relationship("DifficultyLevel", back_populates="questions")
     answers = db.relationship("Answer", back_populates="question")
     tests_users = db.relationship('AnswersTest', back_populates='question')
-    def __init__(self, name, description, weight, expiration_time):
-        self.name = name
-        self.description = description
-        self.weight = weight
-        self.expiration_time=expiration_time
 
+    def __init__(self, content, weight, expiration_time, description, type_uuid, creator_uuid, moderator_uuid,
+                 difficulty_level_uuid):
+        self.content = content
+        self.weight = weight
+        self.expiration_time = expiration_time
+        self.description = description
+        self.type_uuid = type_uuid
+        self.creator_uuid = creator_uuid
+        self.moderator_uuid = moderator_uuid
+        self.difficulty_level_uuid = difficulty_level_uuid
 
     def __repr__(self):
         return '< AssessmentType: name {}>'.format(self.name)
@@ -500,9 +503,10 @@ class Answer(db.Model):
 
     question = db.relationship("Question", back_populates="answers")
 
-    def __init__(self, name, description_template):
+    def __init__(self, name, content, is_correct):
         self.name = name
-        self.description_template = description_template
+        self.content = content
+        self.is_correct = is_correct
     def __repr__(self):
         return '< QuestionType: name {}>'.format(self.name)
 
