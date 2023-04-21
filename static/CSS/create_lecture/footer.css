@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+body {
+  background: #ffffff;
+  font-family: "Open Sans";
+  margin: 0;
+}
+
+:root {
+  --black: rgba(0, 0, 0, 1);
+  --black-alpha: rgba(0, 0, 0, 0.8);
+  --morning-mist: #e4edf3;
+  --child-of-light: #eff4f8;
+  --galactic-tint: #bfc3c6;
+  --bright-chambray-hover: rgba(172, 191, 202, 0.3);
+  --bright-chambray: rgba(172, 191, 202, 0.3);
+  --snow-shadow: #d6e3ed;
+  --weldon-blue: #7b98ab;
+  --dark-secret: #3d5261;
+  --melody: #bdccd4;
+  --active-normal: #acbfca;
+}
+
+footer {
+  width: 100%;
+  background: #f3f7f9;
+}
+
+.memsui--footer--container {
+  width: auto;
+  display: grid;
+  grid-template-columns: repeat(9, min-content) auto min-content;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "LOGO HOME COURSES FAQ ABOUT THX CONTACTS E-MAIL TELEPHONE-NUMBER . ICONS"
+    "LOGO   . 	  . 	.    .    .     .       .            .           . ICONS";
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(43, 45, 47, 0.85);
+  column-gap: 17px;
+  margin: 0 50px 0 50px;
+  padding: 55px 0 55px 0;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.LOGO {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 20px;
+  justify-self: stretch;
+  align-self: center;
+  grid-area: LOGO;
+  color: #494b4d;
+}
+
+.LOGO .sub--logo {
+  padding-left: 0.7px;
+  display: flex;
+  padding-top: 5px;
+  flex-direction: row;
+  font-size: 12px;
+  color: rgba(43, 45, 47, 0.75);
+}
+
+.HOME {
+  justify-self: stretch;
+  align-self: end;
+  grid-area: HOME;
+}
+
+.COURSES {
+  justify-self: stretch;
+  align-self: end;
+  grid-area: COURSES;
+}
+
+.FAQ {
+  justify-self: stretch;
+  align-self: end;
+  grid-area: FAQ;
+}
+
+.ABOUT {
+  justify-self: stretch;
+  align-self: end;
+  grid-area: ABOUT;
+}
+
+.THX {
+  justify-self: stretch;
+  align-self: end;
+  grid-area: THX;
+}
+
+.CONTACTS {
+  justify-self: stretch;
+  align-self: end;
+  grid-area: CONTACTS;
+}
+
+.E-MAIL {
+  justify-self: stretch;
+  align-self: end;
+  grid-area: E-MAIL;
+}
+
+.TELEPHONE-NUMBER {
+  align-self: end;
+  grid-area: TELEPHONE-NUMBER;
+}
+
+.ICONS {
+  justify-self: stretch;
+  align-self: center;
+  grid-area: ICONS;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.logo_ex {
+  width: 24px;
+  height: 24px;
+  border-radius: 10px;
+  background: #494b4d;
+}
+
+@media (max-width: 1194px) {
+  .memsui--footer--container {
+    grid-template-columns: repeat(5, min-content) auto min-content;
+    grid-template-areas:
+      "LOGO HOME    ABOUT   THX      E-MAIL            . ICONS"
+      "LOGO COURSES FAQ     CONTACTS TELEPHONE-NUMBER  . ICONS";
+  }
+}
+@media (max-width: 867px) {
+  .memsui--footer--container {
+    grid-template-columns: repeat(4, min-content) auto min-content;
+    grid-template-areas:
+      "LOGO HOME    ABOUT   CONTACTS     . ICONS"
+      "LOGO COURSES FAQ     E-MAIL   . ICONS";
+  }
+
+  .TELEPHONE-NUMBER {
+    display: none;
+  }
+  .THX {
+    display: none;
+  }
+}
+
+@media (max-width: 714px) {
+  .memsui--footer--container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .memsui--footer--sub--container--up {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .memsui--footer--container--up {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .memsui--footer--container--down {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .TELEPHONE-NUMBER {
+    display: none;
+  }
+  .THX {
+    display: none;
+  }
+}
+
+@media (max-width: 485px) {
+  .memsui--footer--container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+  .memsui--footer--sub--container--up {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+  }
+  .memsui--footer--container--up {
+    align-items: start;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .memsui--footer--container--down {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .TELEPHONE-NUMBER {
+    display: none;
+  }
+  .THX {
+    display: none;
+  }
+}

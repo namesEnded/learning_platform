@@ -2,13 +2,15 @@ from datetime import datetime
 import re
 
 import wtforms
+# from flask_ckeditor import CKEditorField
 from wtforms.widgets import EmailInput
 
 from models import Role
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField, RadioField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField, RadioField, TextAreaField, \
+    FileField
 from wtforms.validators import DataRequired, Length, Email, InputRequired, EqualTo, ValidationError
-from wtforms_sqlalchemy.fields import QuerySelectField;
+from wtforms_sqlalchemy.fields import QuerySelectField
 
 
 class LoginForm(FlaskForm):
@@ -58,4 +60,10 @@ class SignupForm(FlaskForm):
                                get_label='name', get_pk=lambda a: a.id,
                                blank_text=u'Select a role')
     # role_id = QuerySelectField(query_factory=choice_query, allow_blank=False, get_label="name", default='admin')
+    submit = SubmitField("Submit")
+
+class LectureForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired(), Length(max=500)])
+    # body = CKEditorField('Body', validators=[DataRequired()])
     submit = SubmitField("Submit")

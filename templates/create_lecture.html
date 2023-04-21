@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/create_lecture/reset.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/create_lecture/lecture.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/create_lecture/base_elements.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/create_lecture/buttons.css')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/create_lecture/flatpickr.min.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/create_lecture/footer.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/create_lecture/base_template.css')}}" />
+<!--    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/create_lecture/editable_text.css')}}" />-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/create_lecture/styles_ck.css')}}" />
+    <script src="{{ url_for('static', filename='js/create_lecture/flatpickr.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/create_lecture/smooth-scrollbar.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/create_lecture/overscroll.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/create_lecture/ru.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/create_lecture/md5.min.js')}}"></script>
+
+    <title>LECTURE</title>
+  </head>
+
+  <body>
+    <header class="memsui--header"></header>
+
+    <main class="memsui--main">
+      <div class="memsui--lecture--container">
+        <div class="memsui--sub--window--lecture">
+          <div class="header">
+            <div class="TITLE-LEFT">
+              <!-- <div class="memsui--editable--text--field">
+                <div class="text-container" onkeypress="return (this.innerText.length <= 100)">
+                  The quick brown fox jumps over the lazy dog.
+                </div>
+                <button class="edit-button">
+                  <div class="edit--icon"></div>
+                </button>
+              </div> -->
+              НАЗВАНИЕ ЛЕКЦИИ
+            </div>
+
+            <div class="SUB-TITLE-LEFT">название курса</div>
+
+            <div class="BUTTONS">
+              <div
+                class="rectangle--button--box"
+                style="height: 25px; width: 120px"
+              >
+                <button
+                  class="memsui--rectangle--button--dark"
+                  id="header-button-editor"
+                  data-tab="#tab_1"
+                >
+                  редактор
+                </button>
+              </div>
+
+              <div
+                class="rectangle--button--box"
+                style="height: 25px; width: 120px"
+              >
+                <button
+                  class="memsui--rectangle--button--dark"
+                  id="header-button-settings"
+                  data-tab="#tab_2"
+                >
+                  Настройки
+                </button>
+              </div>
+
+              <div
+                class="rectangle--button--box"
+                style="height: 25px; width: 36px"
+              >
+                <button
+                  class="memsui--oval--button--dark active"
+                  id="show--btn"
+                >
+                  <img src="{{ url_for('static', filename='svg/sidebar.svg')}}" alt="SVG Icon" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="content">
+            <div class="content--section" id="tab_1">
+              <div
+                data-editor="DecoupledDocumentEditor"
+                data-collaboration="false"
+                data-revision-history="false"
+                id="editor"
+              >
+                <main>
+                  <div class="centered">
+                    <div class="row">
+                      <div class="document-editor__toolbar"></div>
+                    </div>
+                    <div class="row row-editor">
+                      <div class="editor-container">
+                        <div class="editor">
+                          <h2>Bilingual Personality Disorder</h2>
+                          <figure class="image image-style-side">
+                            <img
+                              src="https://c.cksource.com/a/1/img/docs/sample-image-bilingual-personality-disorder.jpg"
+                            />
+                            <figcaption>One language, one person.</figcaption>
+                          </figure>
+                          <p>
+                            This may be the first time you hear about this
+                            made-up disorder but it actually isn’t so far from
+                            the truth. Even the studies that were conducted
+                            almost half a century show that
+                            <strong
+                              >the language you speak has more effects on you
+                              than you realise</strong
+                            >.
+                          </p>
+                          <p>
+                            One of the very first experiments conducted on this
+                            topic dates back to 1964.
+                            <a
+                              href="https://www.researchgate.net/publication/9440038_Language_and_TAT_content_in_bilinguals"
+                              >In the experiment</a
+                            >
+                            designed by linguist Ervin-Tripp who is an authority
+                            expert in psycholinguistic and sociolinguistic
+                            studies, adults who are bilingual in English in
+                            French were showed series of pictures and were asked
+                            to create 3-minute stories. In the end participants
+                            emphasized drastically different dynamics for
+                            stories in English and French.
+                          </p>
+                          <p>
+                            Another ground-breaking experiment which included
+                            bilingual Japanese women married to American men in
+                            San Francisco were asked to complete sentences. The
+                            goal of the experiment was to investigate whether or
+                            not human feelings and thoughts are expressed
+                            differently in
+                            <strong>different language mindsets</strong>. Here
+                            is a sample from the the experiment:
+                          </p>
+                          <table>
+                            <thead>
+                              <tr>
+                                <th></th>
+                                <th>English</th>
+                                <th>Japanese</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Real friends should</td>
+                                <td>Be very frank</td>
+                                <td>Help each other</td>
+                              </tr>
+                              <tr>
+                                <td>I will probably become</td>
+                                <td>A teacher</td>
+                                <td>A housewife</td>
+                              </tr>
+                              <tr>
+                                <td>When there is a conflict with family</td>
+                                <td>I do what I want</td>
+                                <td>It's a time of great unhappiness</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <p>
+                            More recent
+                            <a
+                              href="https://books.google.pl/books?id=1LMhWGHGkRUC"
+                              >studies</a
+                            >
+                            show, the language a person speaks affects their
+                            cognition, behaviour, emotions and hence
+                            <strong>their personality</strong>. This shouldn’t
+                            come as a surprise
+                            <a
+                              href="https://en.wikipedia.org/wiki/Lateralization_of_brain_function"
+                              >since we already know</a
+                            >
+                            that different regions of the brain become more
+                            active depending on the person’s activity at hand.
+                            Since structure, information and especially
+                            <strong>the culture</strong> of languages varies
+                            substantially and the language a person speaks is an
+                            essential element of daily life.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div id="saved-content" class="ck-content"></div> -->
+                </main>
+                <!-- <button id="save-page">Сохранить страницу</button> -->
+              </div>
+            </div>
+            <div class="content--section" id="tab_2">
+              <h2 class="memsui">ОСНОВНАЯ ИНФОРМАЦИЯ</h2>
+              <div class="scroll--container" id="scroll">
+                <div class="options--section">
+                  <form>
+                    <div class="memsui--form--container">
+                      <div>
+                        <label for="name">Поле 1</label>
+                        <input
+                          type="text"
+                          id="name"
+                          placeholder="введите текст"
+                          name="user_name"
+                        />
+                      </div>
+
+                      <div>
+                        <label for="email">Поле 2</label>
+                        <input
+                          type="text"
+                          id="email"
+                          name="user_email"
+                          placeholder="введите текст"
+                        />
+                      </div>
+
+                      <div>
+                        <label for="city">Поле 3</label>
+                        <input
+                          type="text"
+                          id="city"
+                          name="user_city"
+                          placeholder="введите текст"
+                        />
+                      </div>
+                      <div class="memsui--row">
+                        <div>
+                          <label for="ri1">Поле 5</label>
+                          <input
+                            type="text"
+                            id="ri1"
+                            name="ri1"
+                            placeholder="введите текст"
+                          />
+                        </div>
+                        <div>
+                          <label for="ri2">Поле 6</label>
+                          <input
+                            type="text"
+                            id="ri2"
+                            name="ri2"
+                            placeholder="введите текст"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="memsui--row">
+                        <div class="memsui--row">
+                          <label for="checkbox_1">Чекбокс 1</label>
+                          <input
+                            type="checkbox"
+                            class="memsui--controls--checkbox"
+                            name="cb2"
+                            id="checkbox_1"
+                          />
+                        </div>
+                        <div class="memsui--row">
+                          <label for="checkbox_2">Чекбокс 2</label>
+                          <input
+                            type="checkbox"
+                            class="memsui--controls--checkbox"
+                            name="cb2"
+                            id="checkbox_2"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="memsui--row">
+                        <div class="memsui--row">
+                          <label for="switch_1">Свитч 1</label>
+                          <input
+                            type="checkbox"
+                            class="memsui--controls--switch"
+                            name="switch1"
+                            id="switch1"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="memsui--row">
+                        <div class="memsui--row">
+                          <label for="radiobutton_1">Радиокнопка 1</label>
+                          <input
+                            type="radio"
+                            class="memsui--controls--radio"
+                            name="radio-button"
+                            id="radiobutton_1"
+                          />
+                        </div>
+                        <div class="memsui--row">
+                          <label for="radiobutton_2">Радиокнопка 2</label>
+                          <input
+                            type="radio"
+                            class="memsui--controls--radio"
+                            name="radio-button"
+                            id="radiobutton_2"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="memsui--controls--custom-select_container">
+                        <div class="memsui--controls--custom-select">
+                          <!-- Just create standart select here! -->
+                          <select>
+                            <option value="0">Поле выбора</option>
+                            <option value="1">Audi</option>
+                            <option value="2">BMW</option>
+                            <option value="3">Citroen</option>
+                            <option value="4">Citroen Citroen</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="memsui--row">
+                        <div>
+                          <label for="birthday">Поле с кнопкой</label>
+                          <div class="memsui--row" style="flex-wrap: nowrap">
+                            <input type="text" />
+                            <div
+                              class="circle--button--box"
+                              style="width: 35px; height: 35px"
+                            >
+                              <button class="memsui--circle--button">
+                                <img src="{{ url_for('static', filename='svg/settings.svg')}}" alt="SVG Icon" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="memsui--row">
+                        <div>
+                          <label for="calendar">Поле 1</label>
+                          <div
+                            class="memsui--row"
+                            style="flex-wrap: nowrap; gap: 0"
+                          >
+                            <input
+                              type="text"
+                              id="calendar"
+                              placeholder="Выберите дату"
+                              class="memsui--input--with--icon"
+                            />
+                            <div class="memsui--input--icon"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <script type="text/javascript">
+                        let calendar = flatpickr("#calendar", {
+                          locale: "ru",
+                          altInput: true,
+                          altFormat: "F j, Y",
+                          dateFormat: "Y-m-d",
+                        });
+
+                        let icon = document.querySelector(
+                          ".memsui--input--icon"
+                        );
+                        icon.addEventListener("click", () => {
+                          event.preventDefault();
+                          calendar.open();
+                        });
+                      </script>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="memsui--page--contaner is-visible">
+          <div class="header">
+            <div class="header--title">СПИСОК СТРАНИЦ</div>
+            <div class="sub--header">Всего страниц: NN</div>
+          </div>
+          <div class="pages" id="scroll--pages">
+          </div>
+          <div class="buttons">
+            <div
+              class="rectangle--button--box"
+              style="width: 100%; height: 30px">
+              <button class="memsui--rectangle--button--memsblue" id="add-page">
+                ДОБАВИТЬ НОВУЮ
+              </button>
+            </div>
+            <div
+              class="rectangle--button--box"
+              style="width: 100%; height: 30px">
+              <button
+                class="memsui--rectangle--button--memsblue"
+                style="font-size: 11.9px"
+                id="save-page">
+                СОХРАНИТЬ СТРАНИЦУ
+              </button>
+            </div>
+            <div
+              class="rectangle--button--box"
+              style="width: 100%; height: 30px">
+              <button class="memsui--rectangle--button--memsblue" id="save-all-pages">
+                СОХРАНИТЬ ВСЕ
+              </button>
+            </div>
+            <div
+              class="rectangle--button--box"
+              style="width: 100%; height: 30px"
+            >
+              <button class="memsui--rectangle--button--memsblue" id="delete-all-pages">
+                УДАЛИТЬ ВСЕ
+              </button>
+            </div>
+            <div
+              class="rectangle--button--box"
+              style="width: 100%; height: 30px"
+            >
+              <button class="memsui--rectangle--button--memsblue" id="download-all-pages">
+                ЗАГРУЗИТЬ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="memsui--footer">
+      <div class="memsui--footer--container">
+        <div class="LOGO">
+          <div class="div">mems.petrsu.ru</div>
+          <div class="sub--logo">
+            <span>ended</span>
+            <span
+              style="
+                font-size: 8px;
+                line-height: 20px;
+                text-align: center;
+                letter-spacing: 0.05em;
+              "
+              >_com
+            </span>
+            <span>&nbsp@2023</span>
+          </div>
+        </div>
+        <div class="ICONS">
+          <div class="logo_ex"></div>
+          <div class="logo_ex"></div>
+          <div class="logo_ex"></div>
+        </div>
+        <div class="E-MAIL">test@test.test</div>
+        <div class="HOME">ДОМОЙ</div>
+        <div class="COURSES">КУРСЫ</div>
+        <div class="FAQ">ЧАВО</div>
+        <div class="ABOUT">О ПЛАТФОРМЕ</div>
+        <div class="THX">СКАЗАТЬ СПАСИБО</div>
+        <div class="CONTACTS">КОНТАКТЫ</div>
+        <div class="TELEPHONE-NUMBER">+7 (911) 010 23 01</div>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const button = document.querySelector("#show--btn");
+        const pageList = document.querySelector(".memsui--page--contaner");
+
+        button.addEventListener("click", () => {
+          toggleTwoClasses(pageList, "is-visible", "is-hidden", 100);
+          if (!button.classList.contains("active")) {
+            button.classList.add("active");
+          } else {
+            button.classList.remove("active");
+          }
+        });
+      });
+
+      function toggleTwoClasses(element, first, second, timeOfAnimation) {
+        if (!element.classList.contains(first)) {
+          element.classList.add(first);
+          element.classList.remove(second);
+        } else {
+          element.classList.add(second);
+          window.setTimeout(function () {
+            element.classList.remove(first);
+          }, timeOfAnimation);
+        }
+      }
+
+      var Scrollbar = window.Scrollbar;
+      Scrollbar.use(window.OverscrollPlugin);
+      const scrollbar = Scrollbar.init(document.querySelector("#scroll"), {
+        damping: 0.1,
+        alwaysShowTracks: true,
+        plugins: {
+          overscroll: {
+            effect: "glow",
+            glowColor: "#BFC3C6",
+            maxOverscroll: 100,
+          },
+        },
+      });
+
+      scrollModerators = Scrollbar.init(
+        document.querySelector("#scroll--pages"),
+        {
+          damping: 0.1,
+          alwaysShowTracks: false,
+          plugins: {
+            overscroll: {
+              effect: "glow",
+              glowColor: "#BFC3C6",
+              maxOverscroll: 100,
+            },
+          },
+        }
+      );
+
+      scrollbar.addListener((scrollEvent) => {
+        calendar.close();
+      });
+
+      const container = document.querySelector("#scroll");
+      const content = document.querySelector(".options--section");
+
+      // Отключаем стандартный скроллбар на контенте и контейнере
+      content.style.overflow = "hidden";
+      container.style.overflow = "hidden";
+
+      // Отключаем скролл на мобильных устройствах, чтобы использовать свайпы
+      scrollbar.options.mobileNativeScroll = true;
+
+      // Добавляем класс .hide-scrollbar к контейнеру, если контент вмещается в контейнер, и удаляем этот класс, если контент не вмещается
+      const checkScrollbar = () => {
+        if (content.offsetHeight >= container.offsetHeight) {
+          scrollbar.track.yAxis.show();
+        } else {
+          scrollbar.track.yAxis.hide();
+        }
+      };
+
+      // Запускаем проверку размеров контейнера и контента сразу после загрузки страницы
+      checkScrollbar();
+
+      // Запускаем проверку размеров контейнера и контента при изменении размеров окна
+      window.addEventListener("resize", checkScrollbar);
+
+      function createPageItem(pageNumber, is_save) {
+        const pageItem = document.createElement('div');
+        if (is_save) {
+          pageItem.classList.add('page--item--standart--i');
+        } else {
+          pageItem.classList.add('page--item--non--save--standart--i');
+        }
+        pageItem.dataset.pageNumber = pageNumber;
+
+        const textContainer = document.createElement('div');
+        textContainer.classList.add('text--container');
+
+        const pageNumberSpan = document.createElement('span');
+        pageNumberSpan.classList.add('page--number');
+        pageNumberSpan.textContent = `${pageNumber}`;
+        textContainer.appendChild(pageNumberSpan);
+
+        const pageName = document.createElement('span');
+        pageName.classList.add('page--name');
+        pageName.textContent = `Страница`;
+        textContainer.appendChild(pageName);
+
+        pageItem.appendChild(textContainer);
+
+        const pageButtons = document.createElement('div');
+        pageButtons.classList.add('page--buttons');
+
+        const deleteButtonBox = document.createElement('div');
+        deleteButtonBox.classList.add('circle--button--box');
+        deleteButtonBox.style.width = '28px';
+        deleteButtonBox.style.height = '28px';
+
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('memsui--circle--button--img--delete--red');
+        deleteButton.addEventListener('click', () => {
+          if (confirm("Вы уверены, что хотите удалить страницу?")) {
+            deletePage(pageNumber);
+          }
+        });
+
+        const deleteButtonImg = document.createElement('img');
+        deleteButtonImg.src = '{{ url_for('static', filename='svg/trash.svg')}}';
+        deleteButtonImg.alt = 'SVG Icon';
+        deleteButtonImg.style.width = '68%';
+
+        deleteButton.appendChild(deleteButtonImg);
+        deleteButtonBox.appendChild(deleteButton);
+        pageButtons.appendChild(deleteButtonBox);
+
+        pageItem.appendChild(pageButtons);
+
+        pageItem.addEventListener('click', () => {
+          if (pages.children[currentPage].classList.contains("page--item--non--save--standart--i")){
+            saveEditorContent();
+          }
+          const newPage = pageItem.cloneNode(true);
+          const newPageNumber = Number(newPage.dataset.pageNumber);
+          currentPage = newPageNumber;
+          console.log(currentPage);
+          setActivePage();
+          setEditorContent();
+          currentPageIsChanged = false;
+        });
+
+        return pageItem;
+      }
+
+
+      function reindexPages() {
+        for (let i = 0; i < pages.children.length; i++) {
+          const page = pages.children[i];
+          page.dataset.pageNumber = i;
+          page.querySelector(".page--number").textContent = i + 1;
+          const content = localStorage.getItem(`page-${i}`);
+          if (content !== null) {
+            localStorage.setItem(`page-${i}`, content);
+            if (currentPage === i) {
+              setEditorContent();
+            }
+          } else if (currentPage === i) {
+            currentPage = 0;
+            localStorage.setItem("currentPageNumber", currentPage);
+            setEditorContent();
+          }
+        }
+        setActivePage();
+      }
+
+      function setActivePage() {
+        for (const page of pages.children) {
+          page.classList.remove("active");
+        }
+        pages.children[currentPage]?.classList.add("active");
+        localStorage.setItem("currentPageNumber", currentPage);
+      }
+
+      function setEditorContent() {
+        const content = localStorage.getItem(`page-${currentPage}`) || "";
+        editorinstance.setData(content);
+      }
+
+      function saveEditorContent() {
+        const content = editorinstance.getData();
+        if (content !== "") {
+          const pageItem = pages.children[currentPage];
+          if (pageItem.classList.contains("page--item--non--save--standart--i")) { // check if it's a non-save page
+            pageItem.classList.remove("page--item--non--save--standart--i");
+            pageItem.classList.add("page--item--standart--i"); // change class to save page
+            currentPageHash = md5(content);
+            currentPageIsChanged = false;
+          }
+          pageItem.classList.remove("active")
+          pageItem.classList.add("active")
+          localStorage.setItem(`page-${currentPage}`, content);
+        }
+      }
+
+      function updatePageNumbers() {
+        const pageNumbers = [];
+        for (const key in localStorage) {
+          if (key.includes("page-")) {
+            const pageNumber = Number(key.split("-")[1]);
+            pageNumbers.push(pageNumber);
+          }
+        }
+        pageNumbers.sort((a, b) => a - b);
+        const newPageNumbers = Array(pageNumbers.length).fill(0);
+        let newPageNumber = 0;
+        for (let i = 0; i < pageNumbers.length; i++) {
+          const pageNumber = pageNumbers[i];
+          if (pageNumber !== newPageNumber) {
+            localStorage.setItem(
+              `page-${newPageNumber}`,
+              localStorage.getItem(`page-${pageNumber}`)
+            );
+            localStorage.removeItem(`page-${pageNumber}`);
+          }
+          newPageNumbers[i] = newPageNumber;
+          newPageNumber++;
+        }
+        for (const page of pages.children) {
+          const pageNumber = Number(page.dataset.pageNumber);
+          const newPageNumber = newPageNumbers[pageNumbers.indexOf(pageNumber)];
+          page.dataset.pageNumber = newPageNumber;
+          page.querySelector(".page--number").textContent =
+            newPageNumber + 1;
+        }
+      }
+
+      function init() {
+        const pageNumbers = [];
+        for (const key in localStorage) {
+          if (key.includes("page-")) {
+            const pageNumber = Number(key.split("-")[1]);
+            pageNumbers.push(pageNumber);
+          }
+        }
+        pageNumbers.sort((a, b) => a - b);
+        for (const pageNumber of pageNumbers) {
+          const page = createPageItem(pageNumber, true)
+          page.dataset.pageNumber = pageNumber;
+          pages.append(page);
+        }
+        updatePageNumbers();
+        // setActivePage();
+        // setEditorContent();
+        const currentPageNumber = localStorage.getItem("currentPageNumber");
+        if (currentPageNumber) {
+          currentPage = Number(currentPageNumber);
+          setActivePage();
+          setEditorContent();
+        }
+      }
+
+      function deletePage(pageNumber) {
+        localStorage.removeItem(`page-${pageNumber}`);
+        pages.querySelector(`[data-page-number="${pageNumber}"]`).remove();
+        if (currentPage >= pageNumber && currentPage > 0) {
+          currentPage--;
+        }
+        for (let i = pageNumber + 1; i <= pages.children.length; i++) {
+          const page = pages.querySelector(`[data-page-number="${i}"]`);
+          if (page) {
+            page.dataset.pageNumber = i - 1;
+            page.querySelector(".page--number").textContent = i;
+            if (localStorage.getItem(`page-${i}`) !== null) {
+              localStorage.setItem(
+                `page-${i - 1}`,
+                localStorage.getItem(`page-${i}`)
+              );
+              localStorage.removeItem(`page-${i}`);
+            }
+          }
+        }
+        localStorage.setItem("currentPageNumber", currentPage);
+        setActivePage();
+        setEditorContent();
+      }
+
+      function deleteAllPages() {
+        if (confirm("Вы уверены, что хотите удалить все страницы?")) {
+          localStorage.clear();
+          while (pages.firstChild) {
+            pages.removeChild(pages.lastChild);
+          }
+          currentPage = 0;
+          init();
+        }
+      }
+      let currentPageHash = null;
+      let storedPageHash = null;
+      let currentPageIsChanged = false;
+      const scrollConteinerPages = document.getElementById("scroll--pages");
+      const pages = scrollConteinerPages.querySelector(".scroll-content");
+      console.log(pages);
+      const addPageButton = document.getElementById("add-page");
+      // const deletePageButton = document.getElementById("delete-page");
+      const savePageButton = document.getElementById("save-page");
+      const deleteAllPagesButton = document.getElementById("delete-all-pages");
+      const downloadAllPagesButton = document.getElementById("download-all-pages");
+      let currentPage = 0;
+
+      function compareEditorAndStoredPage() {
+        storedPage = localStorage.getItem(`page-${currentPage}`);
+        if (storedPage !== null){
+          if (md5(storedPage) !== currentPageHash) {
+            const currentPageElement = pages.children[currentPage];
+            currentPageElement.classList.replace("page--item--standart--i","page--item--non--save--standart--i");
+            currentPageIsChanged = true;
+          }
+        }
+      }
+
+
+      function addPage() {
+        const newPageNumber = pages.children.length;
+        const newPage = createPageItem(newPageNumber+1, false);
+        newPage.dataset.pageNumber = newPageNumber;
+        pages.append(newPage);
+      }
+
+      function deleteCurrentPage() {
+        if (confirm("Вы уверены, что хотите удалить текущую страницу?")) {
+          deletePage(currentPage);
+        }
+      }
+
+      addPageButton.addEventListener("click", addPage);
+
+      // deletePageButton.addEventListener("click", deleteCurrentPage);
+
+      savePageButton.addEventListener("click", saveEditorContent);
+
+      deleteAllPagesButton.addEventListener("click", deleteAllPages);
+
+      window.addEventListener("beforeunload", () => {
+        saveEditorContent();
+      });
+
+      function loadPagesFromServer() {
+        const lectureUuid = "123";
+        fetch(`/api/pages/${lectureUuid}`)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Ошибка загрузки страниц!");
+            }
+          })
+          .then(pagesData => {
+            for (const pageNumber in pagesData) {
+              localStorage.setItem(`page-${pageNumber}`, pagesData[pageNumber]);
+            }
+            init();
+          })
+          .catch(error => {
+            console.error(error);
+            alert("Ошибка загрузки страниц!");
+          });
+      }
+      downloadAllPagesButton.addEventListener("click", loadPagesFromServer);
+
+
+    </script>
+    <script type="text/javascript" src="/static/js/create_lecture/main.js"></script>
+    <script type="text/javascript" src="/static/js/create_lecture/select.js"></script>
+    <script type="text/javascript" src="/static/js/create_lecture/footer.js"></script>
+    <script type="text/javascript" src="/static/js/create_lecture/tabs.js"></script>
+    <script src="/static/ckeditor.js"></script>
+    <script>
+      let editorinstance;
+      const editor = DecoupledDocumentEditor.create(
+        document.querySelector(".editor"),{
+          simpleUpload: {
+					uploadUrl: '/upload/img',
+					headers: {
+						'X-CSRF-TOKEN': '{{ csrf_token() }}',
+					}
+				}
+				})
+        .then((editor) => {
+          editorinstance = editor;
+
+          editorinstance.model.document.on("change:data", () => {
+            if (!currentPageIsChanged){
+              currentPageHash = md5(editorinstance.getData());
+              compareEditorAndStoredPage();
+            }
+          });
+
+          // Set a custom container for the toolbar.
+          document
+            .querySelector(".document-editor__toolbar")
+            .appendChild(editor.ui.view.toolbar.element);
+          document
+            .querySelector(".ck-toolbar")
+            .classList.add("ck-reset_all");
+            init();
+        })
+        .catch((error) => {
+          console.error("Oops, something went wrong!");
+          console.error(
+            "Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:"
+          );
+          console.warn("Build id: cx7vchjhrccv-u9490jx48w7r");
+          console.error(error);
+        });
+
+        function saveAllPages() {
+          const pagesData = {};
+          for (const key in localStorage) {
+            if (key.includes("page-")) {
+              const pageNumber = Number(key.split("-")[1]);
+              const pageContent = localStorage.getItem(key);
+              pagesData[pageNumber] = pageContent;
+            }
+          }
+          fetch("/api/pages", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(pagesData)
+          })
+            .then(response => {
+              if (response.ok) {
+                alert("Все страницы успешно сохранены!");
+              } else {
+                throw new Error("Ошибка сохранения страниц!");
+              }
+            })
+            .catch(error => {
+              console.error(error);
+              alert("Ошибка сохранения страниц!");
+            });
+        }
+        const saveAllPagesButton = document.getElementById("save-all-pages");
+        saveAllPagesButton.addEventListener("click", saveAllPages);
+    </script>
+  </body>
+</html>

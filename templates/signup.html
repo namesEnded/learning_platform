@@ -7,13 +7,13 @@ SIGN UP TITLE
 {% block css_style %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/simple-scrollbar.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/register.css')}}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/simplepicker.css')}}">
+<!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/simplepicker.css')}}"> -->
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/base_elements.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/flatpickr.min.css')}}">
 <script src="{{ url_for('static', filename='js/flatpickr.js')}}"></script>
 <script src="{{ url_for('static', filename='js/smooth-scrollbar.js')}}"></script>
 <script src="{{ url_for('static', filename='js//overscroll.js')}}"></script>
-<script src="{{ url_for('static', filename='js/simplepicker.js')}}"></script>
+<!-- <script src="{{ url_for('static', filename='js/simplepicker.js')}}"></script> -->
 <script src="{{ url_for('static', filename='js/ru.js')}}"></script>
 {% endblock %}
 
@@ -45,7 +45,7 @@ SIGN UP TITLE
 		<div class="register-wrap">
 			<div class="greeting-slides-wrap">
 				<!-- Здесь слайдеры с карточками, пока как svg -->
-				<img src="../img/slider.svg" alt="greeting-slider">
+				<img src="{{ url_for('static', filename='svg/slider.svg')}}" alt="greeting-slider">
 			</div>
 			<div class="register-part-wrap">
 
@@ -62,31 +62,6 @@ SIGN UP TITLE
                     <form id="form_id" action="/signup" method="POST">
                     {{ signup_form.hidden_tag() }}
                         <div class="memsui--form--container">
-                            <div class="memsui--row">
-                                  <div>
-                                  <label for="name">Поле 1</label>
-                                  <div class="memsui--row"
-                                  	style="flex-wrap: nowrap; gap: 0;">
-                                      <input type="text" id="name" placeholder="Введите текст" name="user_name" class="memsui--input--with--icon">
-                              			<div class="memsui--input--icon"></div>
-                                  </div>
-                                  </div>
-                            </div>
-
-                            <script type="text/javascript">
-                            		let calendar = flatpickr("#name", {
-                            			 "locale": "ru",
-                            		    altInput: true,
-                            		    altFormat: "F j, Y",
-                            		    dateFormat: "Y-m-d",
-                            		});
-
-                            		let icon = document.querySelector('.memsui--input--icon')
-                            		 icon.addEventListener("click", () => {
-                                   event.preventDefault();
-                                   calendar.open();
-                                  });
-                            </script>
 
                             <div>
                               {{ signup_form.email.label }}
@@ -96,6 +71,10 @@ SIGN UP TITLE
                             <div>
                               {{ signup_form.password_hash.label }}
                               {{ signup_form.password_hash }}
+                            </div>
+                            <div>
+                              {{ signup_form.password_hash2.label }}
+                              {{ signup_form.password_hash2 }}
                             </div>
 
                             <div>
@@ -117,32 +96,49 @@ SIGN UP TITLE
                               {{ signup_form.last_name.label }}
                               {{ signup_form.last_name }}
                             </div>
-                            <div>
-                            {{ signup_form.gender.label }} {{ signup_form.gender }}
-                            </div>
-
-
 
                             <div class="memsui--row">
                                 {% for answer in signup_form.gender %}
                                     <div class="memsui--row">
-                                      {{ answer.label(id='radio +" "+ answer.id')}}
+                                      {{ answer.label(id='radio-' + answer.id)}}
                                       {{ answer(class='memesui--controls--radio') }}
                                     </div>
                                 {% endfor %}
                             </div>
 
-                            <div>
-                              {{ signup_form.date_of_birth.label }}
-                              {{ signup_form.date_of_birth }}
-                              {% if signup_form.date_of_birth.errors %}
-                                <ul class="errors">
-                                    {% for error in signup_form.date_of_birth.errors %} 
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                              {% endif %}
+                            <div class="memsui--row">
+                                  <div>
+                                      {{ signup_form.date_of_birth.label }}
+                                      <div class="memsui--row"
+                                        style="flex-wrap: nowrap; gap: 0;">
+                                          {{ signup_form.date_of_birth(class='memsui--input--with--icon')}}
+                                          <div class="memsui--input--icon"></div>
+                                      </div>
+                                  </div>
+                                  {% if signup_form.date_of_birth.errors %}
+                                    <ul class="errors">
+                                        {% for error in signup_form.date_of_birth.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                  {% endif %}
                             </div>
+
+                            <script type="text/javascript">
+                                    let calendar = flatpickr("#{{signup_form.date_of_birth.id}}", {
+                                         "locale": "ru",
+                                        altInput: true,
+                                        altFormat: "F j, Y",
+                                        dateFormat: "Y-m-d",
+                                    });
+
+                                   let icon = document.querySelector('.memsui--input--icon')
+                                   icon.addEventListener("click", () => {
+                                   event.preventDefault();
+                                   calendar.open();
+                                  });
+                            </script>
+
 
                             <div>
                               {{ signup_form.country.label }}
@@ -157,13 +153,13 @@ SIGN UP TITLE
                             <div>
                               {{ signup_form.phone_number.label }}
                               {{ signup_form.phone_number }}
-                              {% if signup_form.phone_number.errors %}
-                                <ul class="errors">
-                                    {% for error in signup_form.phone_number.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                              {% endif %}
+                                  {% if signup_form.phone_number.errors %}
+                                    <ul class="errors">
+                                        {% for error in signup_form.phone_number.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                  {% endif %}
                             </div>
 
                               
@@ -182,12 +178,7 @@ SIGN UP TITLE
 			</div>
 		</div>
 	</div>
-
-	<div id="footer">
-	</div>
-	<!-- <script src="../js/burger.js"></script> -->
-	<!-- <script src="../js/simplebar.js"></script> -->
-	<script>
+    <script>
 		var Scrollbar = window.Scrollbar;
 		Scrollbar.use(window.OverscrollPlugin)
 		const scrollbar = Scrollbar.init(document.querySelector('#scroll'),{
@@ -205,7 +196,12 @@ SIGN UP TITLE
 		  calendar.close();
 		});
 	</script>
+	<div id="footer">
+	</div>
+	<!-- <script src="../js/burger.js"></script> -->
+	<!-- <script src="../js/simplebar.js"></script> -->
   </form>
+  <script src="{{ url_for('static', filename='js/select.js')}}"></script>
 {% endif %}
 {% endblock %}
 

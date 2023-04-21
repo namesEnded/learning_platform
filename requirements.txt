@@ -24,3 +24,5 @@ SQLAlchemy==1.4.31
 Werkzeug==2.0.2
 WTForms==3.0.1
 WTForms-SQLAlchemy==0.3
+
+pymongo~=4.3.3

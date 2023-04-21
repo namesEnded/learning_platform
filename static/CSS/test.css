@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap');
+/* This is the project stylesheet */
+
+:root {
+  /* Colors */
+  --black: rgba(0, 0, 0, 1);
+  --gainsboro: rgba(229, 229, 229, 1);
+  --light-slate-gray: rgba(106, 142, 166, 1);
+  --light-steel-blue: rgba(152, 186, 210, 1);
+  --transparent-black: rgba(0, 0, 0, 0.2);
+  --transparent-black-2: rgba(0, 0, 0, 0.15);
+  --white: rgba(255, 255, 255, 1);
+  --white-smoke: rgba(239, 244, 248, 1);
+
+}
+
+.login-page {
+  background-color: var(--white);
+  padding: 0 0 342px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.logon-page-title {
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.flex-wrapper-one {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+}
+.login-page-main-title {
+  width: 884px;
+  font-family: "Open Sans";
+  font-size: 40px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--black);
+  text-align: right;
+  text-transform: uppercase;
+  margin-right: 4px;
+  letter-spacing: 2px;
+}
+.lp-icon {
+  width: 552px;
+  font-family: "Open Sans";
+  font-size: 40px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.login-page-sub-title {
+  width: 1440px;
+  font-family: "Open Sans";
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--black);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.79px;
+}
+.input-fields {
+  margin-bottom: 25px;
+  margin-left: 503px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.login-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-field:not(:last-of-type) {
+  margin-bottom: 15px;
+}
+.login-field-title {
+  width: 433px;
+  font-family: "Open Sans";
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--black);
+  margin-bottom: 15px;
+  letter-spacing: 0.79px;
+}
+.login-btn {
+  margin-left: 597px;
+}
+
+.header {
+  background-color: var(--light-steel-blue);
+  padding: 28px 130px 28px 127px;
+  box-shadow: 0 4px 6px 0 var(--transparent-black-2);
+  display: flex;
+  align-items: center;
+  margin-bottom: 242px;
+  }
+
+.titile {
+  margin-right: 15px;
+  display: flex;
+  align-items: flex-start;
+}
+.main-title {
+  font-family: "Open Sans";
+  font-size: 32px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--white);
+  text-transform: uppercase;
+  margin-right: 1px;
+  letter-spacing: 1.6px;
+}
+hat. {
+  font-family: "Open Sans";
+  font-size: 32px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--white);
+  text-align: right;
+  text-transform: uppercase;
+  margin-right: 20px;
+  letter-spacing: 1.6px;
+}
+.sub-title {
+  width: 525px;
+  font-family: "Open Sans";
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--white);
+  text-transform: uppercase;
+  margin-top: 14px;
+  letter-spacing: 0.8px;
+}
+
+.header-item {
+  background-color: var(--light-slate-gray);
+  border-radius: 10px;
+  display: flex;
+  margin-right: 6px;
+  width: 40px;
+  height: 36px;
+  background-color: var(--light-slate-gray);
+}

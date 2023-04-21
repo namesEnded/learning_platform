@@ -10,13 +10,13 @@ from flask_login import UserMixin
 
 user_group = db.Table(
         "user_group",
-        db.Column("group_uuid",UUID(as_uuid=True), db.ForeignKey("groups.uuid")),
-        db.Column("user_uuid",UUID(as_uuid=True), db.ForeignKey("users.uuid")),
+        db.Column("group_uuid",UUID(as_uuid=True), db.ForeignKey("groups.uuid", ondelete="CASCADE")),
+        db.Column("user_uuid",UUID(as_uuid=True), db.ForeignKey("users.uuid", ondelete="CASCADE"))
     )
 
 groups_courses = db.Table('subscribed_groups',
-        db.Column('course_uuid', UUID(as_uuid=True), db.ForeignKey('courses.uuid')),
-        db.Column('group_uuid', UUID(as_uuid=True), db.ForeignKey('groups.uuid'))
+        db.Column('course_uuid', UUID(as_uuid=True), db.ForeignKey('courses.uuid', ondelete="CASCADE")),
+        db.Column('group_uuid', UUID(as_uuid=True), db.ForeignKey('groups.uuid', ondelete="CASCADE"))
         )
 
 roles_users = db.Table('roles_users',
@@ -28,8 +28,8 @@ subject_course = db.Table('subject_course',
         db.Column('subject_uuid', UUID(as_uuid=True), db.ForeignKey('subjects.uuid')))
 
 test_questions = db.Table('test_questions',
-        db.Column('test_uuid', UUID(as_uuid=True), db.ForeignKey('tests.uuid'), primary_key=True),
-        db.Column('question_uuid', UUID(as_uuid=True), db.ForeignKey('questions.uuid'), primary_key=True))
+        db.Column('test_uuid', UUID(as_uuid=True), db.ForeignKey('tests.uuid', ondelete="CASCADE"), primary_key=True),
+        db.Column('question_uuid', UUID(as_uuid=True), db.ForeignKey('questions.uuid', ondelete="CASCADE"), primary_key=True))
 
 class Course(db.Model):
     __tablename__ = 'courses'
@@ -42,8 +42,8 @@ class Course(db.Model):
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     creator = db.relationship("User", back_populates="courses")
-    subjects = db.relationship("Subject", secondary=subject_course, backref="courses")
-    subscribed_groups = db.relationship("Course", secondary=groups_courses, backref="subscribed_courses")
+    subjects = db.relationship("Subject", secondary=subject_course, backref="courses",cascade="all, delete")
+    subscribed_groups = db.relationship("Course", secondary=groups_courses, backref="subscribed_courses",cascade="all, delete")
 
     def __init__(self, title, review, text_content, creator_uuid):
         self.creator_uuid = creator_uuid
@@ -145,13 +145,13 @@ class User(db.Model, UserMixin):
     # Define the relationship
     roles = db.relationship('Role', secondary=roles_users, backref='roled')
     courses = db.relationship('Course', back_populates="creator")
+    lectures = db.relationship('Lecture', back_populates="creator")
     groups = db.relationship('Group', back_populates="owner")
     questions = db.relationship("Question", back_populates="creator", foreign_keys = 'Question.creator_uuid')
     tests = db.relationship("Test", back_populates="creator", )
     moderated_questions = db.relationship("Question", back_populates="moderator", foreign_keys='Question.moderator_uuid')
     answers_tests = db.relationship('AnswersTest', back_populates='user')
     test_results = db.relationship('TestResult', back_populates='user')
-
     @property
     def id(self):
         return self.uuid
@@ -210,8 +210,8 @@ class Group(db.Model):
     documented_group_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('groups.uuid'), nullable=True)
 
     owner = db.relationship("User", back_populates="groups")
-    in_users = db.relationship("User", secondary=user_group, backref="belongs_groups")
-    documented_group = db.relationship('Group', remote_side=[uuid])
+    in_users = db.relationship("User", secondary=user_group, backref="belongs_groups", cascade="all, delete")
+    documented_group = db.relationship('Group', remote_side=[uuid], cascade="all, delete")
 
 
     def __init__(self, name, description, owner_uuid, is_virtual, documented_group_uuid):
@@ -295,7 +295,7 @@ class Test(db.Model):
 
     creator = db.relationship("User", back_populates="tests")
     assessment_type = db.relationship("AssessmentType", back_populates="tests")
-    questions = db.relationship("Question", secondary=test_questions, backref="tests")
+    questions = db.relationship("Question", secondary=test_questions, backref="tests",cascade="all, delete")
     answers_users = db.relationship('AnswersTest', back_populates='test')
     users_results = db.relationship('TestResult', back_populates='test')
 
@@ -325,6 +325,7 @@ class Test(db.Model):
     @classmethod
     def find_test_by_name(cls, test_name):
         return cls.query.filter_by(name=test_name).first()
+
 
     @classmethod
     def isExist(cls, test_name):
@@ -382,7 +383,6 @@ class AssessmentType(db.Model):
             'description': self.description,
         }
 
-
 class Question(db.Model):
     __tablename__ = 'questions'
     uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
@@ -402,7 +402,7 @@ class Question(db.Model):
     creator = db.relationship("User", foreign_keys=[creator_uuid], back_populates="questions")
     moderator = db.relationship("User", foreign_keys=[moderator_uuid], back_populates="moderated_questions")
     difficulty_level = db.relationship("DifficultyLevel", back_populates="questions")
-    answers = db.relationship("Answer", back_populates="question")
+    answers = db.relationship("Answer", back_populates="question", cascade="all, delete",passive_deletes=True)
     tests_users = db.relationship('AnswersTest', back_populates='question')
 
     def __init__(self, content, weight, expiration_time, description, type_uuid, creator_uuid, moderator_uuid,
@@ -417,7 +417,7 @@ class Question(db.Model):
         self.difficulty_level_uuid = difficulty_level_uuid
 
     def __repr__(self):
-        return '< AssessmentType: name {}>'.format(self.name)
+        return '< Question: uuid {}>'.format(self.uuid)
 
     @classmethod
     def find_by_name(cls, question_name):
@@ -496,7 +496,7 @@ class DifficultyLevel(db.Model):
 class Answer(db.Model):
     __tablename__ = 'answers'
     uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
-    question_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('questions.uuid'), nullable=False)
+    question_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('questions.uuid',ondelete="CASCADE"), nullable=False)
     name = db.Column(db.String(150), nullable=False)
     content = db.Column(TEXT, nullable=False)
     is_correct = db.Column(db.Boolean, nullable=False, default=False)
@@ -508,7 +508,7 @@ class Answer(db.Model):
         self.content = content
         self.is_correct = is_correct
     def __repr__(self):
-        return '< QuestionType: name {}>'.format(self.name)
+        return '< Answer: name {}>'.format(self.name)
 
     @classmethod
     def find_by_name(cls, question_type):
@@ -525,19 +525,23 @@ class Answer(db.Model):
             'description_template': self.description_template
         }
 
-
 class AnswersTest(db.Model):
     __tablename__ = 'answers_test'
     uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
     user_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('users.uuid'), nullable=False)
     test_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('tests.uuid'), nullable=False)
     question_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('questions.uuid'), nullable=False)
+    answer = db.Column(db.JSON)
     user = db.relationship('User', back_populates='answers_tests')
     test = db.relationship('Test', back_populates='answers_users')
     question = db.relationship('Question', back_populates='tests_users')
     def __repr__(self):
-        return f'{self.uuid} {self.user_uuid} {self.test_uuid} {self.question_uuid}'
-
+        return f'{self.uuid} {self.user_uuid} {self.test_uuid} {self.question_uuid} {self.answer}'
+    def __init__(self, user_uuid,test_uuid,question_uuid,answer ):
+        self.user_uuid = user_uuid
+        self.test_uuid = test_uuid
+        self.question_uuid = question_uuid
+        self.answer = answer
 
 class TestResult(db.Model):
     __tablename__ = 'test_results'
@@ -575,3 +579,42 @@ class TestResult(db.Model):
             'name': self.name,
             'description_template': self.description_template
         }
+
+# class LectureContent(db.Model):
+#     __tablename__ = 'lecture_content'
+#     uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+#     content = db.Column(TEXT, nullable=False)
+#
+#     def __repr__(self):
+#         return f"LectureContent('{self.content}')"
+
+class Lecture(db.Model):
+    __tablename__ = 'lectures'
+    uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(500), nullable=False)
+    course_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('courses.uuid'), nullable=False)
+    course = db.relationship('Course', backref=db.backref('lectures', lazy=True))
+    is_active = db.Column(db.Boolean, nullable=False, default=False)
+    start_date = db.Column(db.DateTime())
+    end_date = db.Column(db.DateTime())
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_modified = db.Column(db.DateTime, default=datetime.utcnow)
+    creator = db.relationship("User", back_populates="lectures")
+    # content_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('lecture_content.uuid'), nullable=False)
+    # content = db.relationship('LectureContent', backref=db.backref('lectures', lazy=True))
+    content_url = db.Column(db.String(500))
+
+    def __repr__(self):
+        return f"Lecture('{self.name}', '{self.description}')"
+
+# class LectureImage(db.Model):
+#     __tablename__ = 'lectures_images'
+#     uuid = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, primary_key=True)
+#     lecture_uuid = db.Column(UUID(as_uuid=True), db.ForeignKey('lectures.uuid'), nullable=False)
+#     lecture = db.relationship('Lecture', backref=db.backref('images', lazy=True))
+#     file_name = db.Column(db.String(100), nullable=False)
+#     file_path = db.Column(db.String(100), nullable=False)
+#
+#     def __repr__(self):
+#         return f"LectureImage('{self.file_name}', '{self.file_path}')"

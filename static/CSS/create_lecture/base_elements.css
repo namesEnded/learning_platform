@@ -1,0 +1,747 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+body { background: #FFFFFF; font-family: 'Open Sans'; margin:0;}
+
+:root {
+	--black: rgba(0, 0, 0, 1);
+	--black-alpha: rgba(0, 0, 0, 0.8);
+	--morning-mist: #e4edf3;
+	--child-of-light: #eff4f8;
+	--galactic-tint: #bfc3c6;
+	--bright-chambray-hover: rgba(172, 191, 202, 0.3);
+	--bright-chambray: rgba(172, 191, 202, 0.3);
+	--snow-shadow: #d6e3ed;
+	--weldon-blue: #7b98ab;
+	--dark-secret: #3d5261;
+  --melody: #bdccd4;
+  --active-normal: #ACBFCA;
+  --memsblue-non: #6A8EA6;
+  --memsblue-hover: #4F6A7D;
+  --memsblue-active: #3D5261;
+	}
+
+.memsui--form--container{
+	min-width: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	justify-content: start;
+	gap:20px;
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 20px;
+	letter-spacing: 0.05em;
+	color: var(--black);
+	width: 100%;
+	border:none;
+	outline: none;
+}
+
+
+.memsui--form--container div{
+	width: 100%;
+}
+
+.memsui--row{
+	display: flex;
+	flex-direction: row;
+	align-items: start;
+	justify-content: space-between;
+	width: 100%;
+	gap:10%;
+}
+
+.memsui--row div{
+	min-width: 20%;
+}
+
+.memsui--row .memsui--row{
+	display: flex;
+	flex-direction: row;
+	align-items: start;
+	justify-content: start;
+	width: 100%;
+	flex-wrap: wrap;
+	gap:20px;
+}
+
+
+
+.memsui--form--container label{
+	display: block;
+	margin-bottom: 15px;
+	width: 100%;
+	overflow-wrap: anywhere;
+	white-space: normal;
+}
+
+.memsui--form--container label[for^="checkbox"],
+.memsui--form--container label[for^="switch"]{
+	margin-bottom: 0px;
+	width: auto;
+	overflow-wrap: anywhere;
+	white-space: normal;
+/*	margin-bottom: 15px;*/
+}
+
+.memsui--form--container label[for^="radiobutton"],
+.memsui--form--container label[ID^="radio"]{
+	margin-bottom: 0px;
+	width: auto;
+	overflow-wrap: anywhere;
+	white-space: normal;
+/*	margin-bottom: 15px;*/
+}
+
+
+.memsui--form--container input[type="text"],
+.memsui--form--container input[type="email"],
+.memsui--form--container input[type="password"]{
+  width: 100%;
+	background: var(--child-of-light);
+	border-radius: 10px;
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 16px;
+	color: var(--black);
+	transition: 300ms;
+	border:none;
+	outline: none;
+	padding-left: 15px;
+	padding-right: 15px;
+	height: 35px;
+}
+
+.memsui--form--container input[type="checkbox"]{
+	margin-top: 2px;
+}
+
+.memsui--form--container input[type="radiobutton"],
+.memsui--form--container input[type="radio"]{
+	margin-top: 2px;
+}
+
+.memsui--form--container input[type="text"]::placeholder,
+.memsui--form--container input[type="email"]::placeholder,
+.memsui--form--container input[type="password"]::placeholder{
+	color: var(--galactic-tint);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+}
+
+.memsui--form--container input[type="text"]:hover,
+.memsui--form--container input[type="email"]:hover,
+.memsui--form--container input[type="password"]:hover{
+	box-shadow: 0px 2px 4px var(--bright-chambray-hover);
+	transition: 300ms;
+}
+
+.memsui--form--container input[type="text"]:focus,
+.memsui--form--container input[type="email"]:focus,
+.memsui--form--container input[type="password"]:focus{
+	box-shadow: 0px 2px 4px var(--bright-chambray);
+	border: none;
+}
+
+.memsui--controls--checkbox { /*Frame*/
+  outline: none;
+  -webkit-appearance: none;
+  display: grid;
+  place-content: center;
+  align-self: center;
+  min-width: 14px;
+  min-height: 14px;
+  margin: 0;
+  box-sizing: border-box;
+  border: 1px solid var(--snow-shadow);
+  border-radius: 3px;
+  transform: translateY(-0.075em);
+  transition: border-color 120ms ease-in-out;
+  cursor:pointer;
+}
+
+.memsui--controls--checkbox::before { /*Check*/
+  content: "";
+  width: 18px;
+  height: 13px;
+  position: absolute;
+  bottom: 1px;
+  background-color: transparent;
+  -webkit-mask-image: url(../svg/checkbox/check_default.svg);
+  mask-image:url(../svg/checkbox/check_default.svg);
+  background-repeat: no-repeat;
+  visibility: hidden;
+  transition: background-color 120ms ease-in-out, visibility 0s 121ms;
+}
+
+.memsui--controls--checkbox:checked::before { /*Show check*/
+  background-color: var(--weldon-blue);
+  visibility:visible;
+  opacity:1;
+  transition: background-color 120ms ease-in-out;
+}
+
+.memsui--controls--checkbox:focus { /*Frame in focus*/
+  border-color: var(--weldon-blue);
+  transition: border-color 120ms ease-in-out;
+}
+
+.memsui--controls--checkbox:checked:focus::before { /*Check in focus*/
+  background-color: var(--dark-secret);
+  transition: background-color 120ms ease-in-out;
+}
+
+.memsui--controls--radio { /*Frame*/
+  outline: none;
+  -webkit-appearance: none;
+  display:grid;
+  place-content: center;
+  align-self: center;
+  min-width: 14px;
+  min-height: 14px;
+  max-width: 14px;
+  max-height: 14px;
+  margin: 0;
+  box-sizing: border-box;
+  border: 1px solid var(--snow-shadow);
+  border-radius: 3px;
+  transform: translateY(-0.075em);
+  cursor:pointer;
+  transition: border-color 120ms ease-in-out;
+}
+
+.memsui--controls--radio::before { /*Dot*/
+  content: "";
+  max-width: 6px;
+  max-height: 6px;
+  min-width: 6px;
+  min-height: 6px;
+  position:initial;
+  background-color: transparent;
+  -webkit-mask-image: url(../svg/radiobutton/dot.svg);
+  mask-image:url(../svg/radiobutton/dot.svg);
+  background-repeat: no-repeat;
+  visibility: hidden;
+  transition: background-color 120ms ease-in-out, visibility 0s 121ms;
+}
+
+.memsui--controls--radio:checked::before { /*Show a dot after it checked*/
+  background-color: var(--weldon-blue);
+  visibility:visible;
+  opacity:1;
+  transition: background-color 120ms ease-in-out;
+}
+
+.memsui--controls--radio:focus /*Frame in focus*/ {
+  border-color: var(--weldon-blue);
+  transition: border-color 120ms ease-in-out;
+}
+
+.memsui--controls--radio:focus::before /*Dot in focus*/ {
+  background-color: var(--dark-secret);
+  transition: background-color 120ms ease-in-out;
+}
+
+.memsui--controls--custom-select_container {
+  min-width: 100px;
+  width: auto;
+}
+
+.memsui--controls--custom-select { /* The container of custom-select, it must be positioned relative: */
+    position: relative;
+    width: auto;
+}
+  
+.memsui--controls--custom-select select { /*hide original SELECT element: */
+    display: none; 
+}
+  
+.memsui--controls--select-selected { /*Head of custom-select, also it's container of selected option*/
+  background-color: var(--child-of-light);
+  border-radius: 10px;
+  height: 35px;
+  cursor: pointer;
+  transition: background-color 120ms ease-in-out;
+  width: auto;
+  grid-template-columns: auto 24px;
+  display: grid;
+  gap: 10px;
+}
+
+.memsui--controls--select-arrow { /* Container of selector arrow */
+  align-self: center;
+  margin-right: 10px;
+  content: "";
+
+  width: 14px!important;
+  height: 6px!important;
+
+  background-color: var(--black-alpha);
+  -webkit-mask-image: url(../svg/select/arrow.svg);
+  mask-image: url(../svg/select/arrow.svg);
+  transform: rotate(180deg);
+  transition: 120ms transform ease-in-out;
+}
+  
+.memsui-controls-select-arrow-active { /* Point the arrow upwards when the select box is open (active): */
+  transform: rotate(0deg);
+}
+
+.memsui--controls--select-selected.memsui--controls--select-active { /*Change a color of head*/
+  background: var(--morning-mist);
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0px 4px 4px var(--bright-chambray);
+  transition: background-color 120ms ease-in-out;
+  width: auto;
+}
+
+.memsui--controls--select-items { /* Style items (options): */
+  visibility:visible;
+  opacity: 1;
+  position: absolute;
+  background-color: var(--child-of-light);
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  text-align: center;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 0px 3px 3px var(--bright-chambray);
+  transition: visibility 0s, opacity 120ms ease-in-out;
+  width: auto;
+}
+  
+.memsui--controls--select-hide{ /* Hide the items when the select box is closed: */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 120ms, visibility 121ms ease-in-out;
+}
+
+.memsui--controls--option, .memsui--controls--option-selected { /*Containers of options*/
+  height: 34px;
+  cursor: pointer;
+  width: auto;
+}
+
+.memsui--controls--option-text, .memsui--controls--selected-text { /*Text of options*/
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: left;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black-alpha);
+  -webkit-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80%!important;
+}
+
+.memsui--controls--selected-text {
+  margin-left: 10px;
+  align-self: center;
+}
+
+.memsui--controls--option-text {
+  padding-top: 8.5px;
+  margin-left: 10px;
+}
+
+.memsui--controls--option:hover .memsui--controls--option-text, .memsui--controls--option-selected:hover .memsui--controls--option-text, .memsui--controls--option-text:hover{
+  overflow:visible;
+}
+
+.memsui--controls--option:hover { /* Change background color when it's under the cursor */
+  background: var(--morning-mist);
+  border-radius: 10px;
+  min-width: fit-content;
+}
+
+.memsui--controls--option-selected { /* Change background color when option is selected */
+  background: var(--snow-shadow);
+  border-radius: 10px;
+}
+
+.memsui--controls--option-selected:hover { /* Change background color when it's under the cursor */
+  background: var(--snow-shadow);
+  border-radius: 10px;
+  min-width: fit-content;
+}
+
+.memsui--input--icon,
+.memsui--profile--picture
+ { /* Change background color when option is selected */
+  min-width: 35px;
+  min-height: 35px;
+  appearance: none;
+  border-radius: 50%;
+  border: 0;
+  background-color: var(--child-of-light);
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  transition: 300ms;
+}
+
+.memsui--input--icon:hover { /* Change background color when option is selected */
+  background-color: var(--morning-mist);
+  box-shadow: 0px 2px 4px var(--bright-chambray-hover);
+  transition: 300ms;
+}
+
+.memsui--input--icon:active{ /* Change background color when option is selected */
+  background-color: var(--snow-shadow);
+}
+
+.memsui--input--icon::before,
+.memsui--profile--picture::before {
+ /* Positioning related code */
+  content: "";
+  display: block;
+  width: 50%; /* width and height must be always equal */
+  height: 50%;
+  background: var(--black-alpha);
+  pointer-events: none;
+  /* this allows optical centering if required */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+   /* Masking code */
+  -webkit-mask-image: url("../svg/icons/calendar.svg");
+          mask-image: url("../svg/icons/calendar.svg");
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+          mask-size: contain; 
+}
+
+ .memsui--input--with--icon:hover + .memsui--input--icon,
+ .memsui--input--with--icon:focus + .memsui--input--icon
+ {
+  box-shadow: 0px 2px 4px var(--bright-chambray-hover);
+  background: var(--snow-shadow);
+  transition: 300ms;
+ }
+
+  .memsui--input--icon:hover ~ .memsui--input--with--icon
+  {
+  box-shadow: 0px 2px 4px var(--bright-chambray-hover)!important;
+  transition: 300ms!important;
+ }
+
+.memsui--input--icon:hover {
+   background: var(--snow-shadow);
+}
+
+.memsui--input--with--icon
+{
+/*  width: calc(100% - 35px) !important;*/
+  border-radius: 10px 0 0 10px !important;
+}
+
+.memsui--input--icon
+{
+  min-width: 35px !important;
+  min-width: 45px !important;
+  width: 35px !important;
+  border-radius: 0 10px 10px 0;
+  background-color: var(--morning-mist);
+}
+
+input[type="text" i] {
+    padding: 0px 0px;
+}
+
+.memsui--controls--switch { /*Frame*/
+  -webkit-appearance: none;
+  display: grid;
+  place-content: center;
+  align-self: center;
+  width: 36px;
+  height: 20px;
+  margin: 0;
+  background-color: #D6E3ED;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.15);
+  border-radius: 360px;
+  transform: translateY(-0.075em);
+  cursor:pointer; 
+  transition: background-color 120ms ease-in-out;
+}
+
+.memsui--controls--switch:checked { /*Change background of frame after it checked*/
+  background-color: #ACBFCA;
+  transition: background-color 120ms ease-in-out;
+}
+
+.memsui--controls--switch::before { /*Ball in state of not checked*/
+  content: "";
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 1px rgba(51, 51, 51, 0.25);
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  transition: 120ms left ease-in-out;
+}
+
+.memsui--controls--switch:checked::before {  /*Move ball after it checked*/
+  left: 17px;
+}
+
+/*-------------------STYLES FOR SCROLL BAR-START--------------------*/
+.scrollbar-thumb {
+
+    width: 20px !important;
+    background: var(--snow-shadow)!important;
+    border-radius: 10px !important;
+    left: inherit !important;
+/*    margin-top: 3px !important;
+    margin-bottom: 3px !important;*/
+/*    top: none !important;
+    left: none !important;*/
+}
+
+.scrollbar-track {
+    background: var(--child-of-light)!important;
+    border-radius: 10px !important;
+}
+
+.scrollbar-track-y {
+    width: 20px !important;
+    display: flex !important;
+    align-items: start;
+    justify-content: center;   
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+    border-radius: 10px !important;
+    /* height: 98.3% !important; */
+}
+/*-------------------STYLES FOR SCROLL BAR-END----------------------*/
+
+.memsui--search--input{
+  border-radius: 10px; 
+  padding-right: 30px !important;
+  height: 25px !important;
+  background-color: var(--snow-shadow) !important;
+}
+
+ img[ID^="search"]{
+  position: absolute; 
+  top: 50%; 
+  right: 10px; 
+  transform: translateY(-50%);
+}
+
+.memsui--profile--picture{
+  width: 40px;
+  height: 40px;
+  background-color: var(--weldon-blue);
+}
+
+.memsui--profile--picture::before{
+  -webkit-mask-image: url("../svg/profile.svg");
+   mask-image: url("../svg/profile.svg");
+}
+
+.memsui--user--item{
+  background: var(--child-of-light);
+  /* background: var(--dr-white); */
+  height: auto;
+  width: calc(100% - 60px);
+  display: grid;
+  border-radius: 10px;
+  grid-template-columns: min-content auto min-content;
+  grid-template-rows: min-content min-content;
+  grid-auto-columns: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  justify-items: stretch;
+  transition: 300ms;
+  grid-template-areas:
+    "USER-IMG USER-NAME BUTTON"
+    "USER-IMG USER-DESCRIPTION BUTTON";
+}
+
+.memsui--user--item:hover
+{  
+  box-shadow: 0px 2px 4px rgba(172, 191, 202, 0.5);
+  transition: 300ms;
+}
+
+.memsui--user--item .USER-IMG {
+  justify-self: end;
+  align-self: center;
+  grid-area: USER-IMG;
+  width: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.memsui--user--item .USER-NAME {
+  justify-self: start;
+  align-self: center;
+  font-size: 14px;
+  line-height: 14px;
+  grid-area: USER-NAME;
+  margin-bottom: 2px;
+  padding-top: 10px; 
+}
+
+.memsui--user--item .USER-DESCRIPTION {
+  justify-self: start;
+  align-self: start;
+  grid-area: USER-DESCRIPTION;
+  padding: 2px 0 10px 0;
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: start;
+  text-transform: none;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  /* white-space: nowrap; */
+}
+
+.memsui--user--item .BUTTON {
+  justify-self: end;
+  align-self: center;
+  grid-area: BUTTON;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+
+[class$="bold"] {
+  font-style: normal;
+  font-weight: 700;
+}
+
+[class$="semibold"] {
+  font-style: normal;
+  font-weight: 600;
+}
+
+[class$="regular"] {
+  font-weight: 400;
+  font-size: 8px;
+}
+
+[class$="light"] {
+  font-style: normal;
+  font-weight: 300;
+}
+
+h1[class="memsui"] {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black-alpha);
+}
+
+h2[class="memsui"] {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black-alpha);
+}
+
+h3[class="memsui"] {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--black-alpha);
+}
+
+.memsui--indicator--container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  height: auto;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.memsui--indicator {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 10px;
+  border-radius: 10px;
+  background: #F8FAFB;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.memsui--indicator:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #82ebac;
+  border-radius: 10px;
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, .2); */
+  animation: load 5s infinite;
+}
+
+@keyframes load {
+  0% {
+    width: 0;
+
+  }
+  
+  25% {
+    width: 25%;
+  }
+  
+  50% {
+    width: 50%;
+  }
+  
+  75% {
+    width: 75%;
+  }
+  
+  100% {
+    width: 100%;
+    background: #4ADF85;
+  }
+}

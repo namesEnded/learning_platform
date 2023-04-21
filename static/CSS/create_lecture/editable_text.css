@@ -1,0 +1,75 @@
+
+ .memsui--editable--text--field {
+    display: flex;
+    width: max-content;
+    min-width: max-content;
+    height: 30px;
+    gap:20px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--black-alpha);
+    padding: 10px;
+    transition: box-shadow 0.2s ease-in-out;
+  }
+
+  .memsui--editable--text--field:focus-within {
+    background-color: #F8FAFB; 
+    transition: 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .memsui--editable--text--field .text-container:focus ~ .edit-button .edit--icon{
+    transition: 0.1s ease-in-out;
+    background-color: #4DB1DE;
+  } 
+
+  .memsui--editable--text--field .edit--icon {
+    transition: 0.1s ease-in-out;
+    cursor: pointer;
+    background: var(--black-alpha);
+    width: 15px;
+    height: 20px;
+    pointer-events: none;
+    -webkit-mask-image: url("../svg/Pen_non_active.svg");
+            mask-image: url("../svg/Pen_non_active.svg");
+    -webkit-mask-position: center;
+            mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+            mask-size: contain; 
+  }
+
+  .memsui--editable--text--field .edit-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    height: auto;
+    width: auto;
+    padding: 0;
+  }
+  
+  .memsui--editable--text--field .edit-button:focus,
+  .memsui--editable--text--field .edit-button:hover {
+    outline: none;
+  }
+
+  .memsui--editable--text--field [contenteditable="true"] {
+    border: none;
+    outline: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }

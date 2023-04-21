@@ -1,0 +1,10 @@
+.memsui--header{
+    height: 10vh;
+    background: #98BAD2;
+}
+.memsui--main{
+    height:90vh;
+}
+.memsui--footer{
+    height: inherit;
+}
